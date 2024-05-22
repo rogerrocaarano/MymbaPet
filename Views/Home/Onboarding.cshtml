@@ -1,34 +1,36 @@
 ﻿@{
     ViewData["Title"] = "Onboarding";
+    string[] onboardingTextStrings =
+    [
+        "Accedé a la información médica de tu mascota al instante",
+        "Agendá citas veterinarias fácilmente.",
+        "Recibí recordatorios de vacunación y chequeos",
+        "Con XXXX asegurás el cuidado y la felicidad de tu mascota"
+    ];
 }
-<div id="onboardingPagination" class="row gap-4">
-    <span class="bg-primary col rounded-pill" style="height: 0.5rem"></span>
-    <span class="bg-primary col rounded-pill"></span>
-    <span class="bg-primary col rounded-pill"></span>
-    <span class="bg-primary col rounded-pill"></span>
-</div>
+<div class="px-3 d-flex flex-column justify-content-between" style="height: 90vh">
+    <div id="onboardingPagination" class="d-flex flex-row justify-content-between p-2">
+        @for (int i = 0; i < onboardingTextStrings.Length; i++)
+        {
+            <span class="onboardingPills"></span>
+        }
+    </div>
 
-<div class="onboardingCard">
-    <img src="" alt="" />
-    <div>Accedé a la información médica de tu mascota al instante</div>
-</div>
+    <div class="container">
+        @for (int i = 0; i < onboardingTextStrings.Length; i++)
+        {
+        <div class="onboardingCard @(i == 0 ? "" : "d-none")">
+            <img
+                class="w-100"
+                src="@($"/images/onboarding/onboarding-{i}.png")"
+                alt="Onboarding image"/>
+            <div class="text-primary font-montserrat-700 fs-3 text-center">@onboardingTextStrings[i]</div>
+        </div>
+        }
+    </div>
 
-<div class="onboardingCard">
-    <img src="" alt="" />
-    <div>Agendá citas veterinarias fácilmente.</div>
-</div>
-
-<div class="onboardingCard">
-    <img src="" alt="" />
-    <div>Recibí recordatorios de vacunación y chequeos</div>
-</div>
-
-<div class="onboardingCard">
-    <img src="" alt="" />
-    <div>Con XXXX asegurás el cuidado y la felicidad de tu mascota</div>
-</div>
-
-<div id="onboardingActions">
-    <button>¡Empecemos!</button>
-    <button>Omitir</button>
+    <div id="onboardingActions" class="d-grid gap-4">
+        <button class="btn btn-primary btn-xlg btn-shadow text-white">¡Empecemos!</button>
+        <button class="btn btn-xlg">Omitir</button>
+    </div>
 </div>
