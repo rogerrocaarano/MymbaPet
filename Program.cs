@@ -4,9 +4,21 @@ using c18_98_m_csharp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Get proper connection string from environment variable or appsettings.json
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
-                       throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+                       throw new InvalidOperationException(
+                           "Connection string 'DefaultConnection' not found."
+                           );
+
+if (connectionString == "GET_FROM_ENV")
+{
+    connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") ??
+                       throw new InvalidOperationException(
+                           "Environment variable 'DB_CONNECTION_STRING' not found."
+                           );
+}
+
+// Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -41,4 +53,13 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 
+// Migrate latest database changes during application startup
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
+}
+
 app.Run();
+
+

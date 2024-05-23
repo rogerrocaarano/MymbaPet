@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Onboarding";
+    string[] onboardingTextStrings =
+    [
+        "Accedé a la información médica de tu mascota al instante",
+        "Agendá citas veterinarias fácilmente.",
+        "Recibí recordatorios de vacunación y chequeos",
+        "Con Mymba Pet asegurás el cuidado y la felicidad de tu mascota"
+    ];
+}
+<div class="px-3 d-flex flex-column justify-content-between" style="height: 90vh">
+    <div id="onboardingPagination" class="d-flex flex-row justify-content-between p-2">
+        @for (int i = 0; i < onboardingTextStrings.Length; i++)
+        {
+            <span class="onboardingPills"></span>
+        }
+    </div>
+
+    <div class="container">
+        @for (int i = 0; i < onboardingTextStrings.Length; i++)
+        {
+        <div class="onboardingCard @(i == 0 ? "" : "d-none")">
+            <img
+                class="w-100"
+                src="@($"/images/onboarding/onboarding-{i}.png")"
+                alt="Onboarding image"/>
+            <div class="text-primary font-default-700 fs-3 text-center">@onboardingTextStrings[i]</div>
+        </div>
+        }
+    </div>
+
+    <div id="onboardingActions" class="d-grid gap-4 font-ui">
+        <button
+            class="btn btn-primary btn-xlg btn-shadow text-white nextButton hideOnEnd">
+            Siguiente
+        </button>
+        <a
+            asp-area="Identity"
+            asp-page="/Account/Login"
+            class="btn btn-xlg hideOnEnd">
+            Omitir
+        </a>
+        <a
+            asp-area="Identity"
+            asp-page="/Account/Login"
+            class="btn btn-primary btn-xlg btn-shadow text-white nextButton d-none displayOnEnd">
+            ¡Empecemos!
+        </a>
+    </div>
+</div>
