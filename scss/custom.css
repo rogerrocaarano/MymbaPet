@@ -11882,6 +11882,10 @@ textarea.form-control-lg {
   background-color: rgba(229, 159, 150, 0.3411764706);
 }
 
+.onboardingPills.active {
+  background-color: #FF3850;
+}
+
 .form-xlg {
   padding: 1.25rem 1rem;
   font-size: 1.25rem;

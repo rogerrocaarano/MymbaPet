@@ -30,7 +30,21 @@
     </div>
 
     <div id="onboardingActions" class="d-grid gap-4 font-ui">
-        <button class="btn btn-primary btn-xlg btn-shadow text-white">¡Empecemos!</button>
-        <button class="btn btn-xlg">Omitir</button>
+        <button
+            class="btn btn-primary btn-xlg btn-shadow text-white nextButton hideOnEnd">
+            Siguiente
+        </button>
+        <a
+            asp-area="Identity"
+            asp-page="/Account/Login"
+            class="btn btn-xlg hideOnEnd">
+            Omitir
+        </a>
+        <a
+            asp-area="Identity"
+            asp-page="/Account/Login"
+            class="btn btn-primary btn-xlg btn-shadow text-white nextButton d-none displayOnEnd">
+            ¡Empecemos!
+        </a>
     </div>
 </div>
