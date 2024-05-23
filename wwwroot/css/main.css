@@ -11855,6 +11855,11 @@ textarea.form-control-lg {
   font-weight: 700;
 }
 
+.font-default-600 {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+}
+
 .font-ui {
   font-family: "Roboto", sans-serif;
 }
@@ -11875,6 +11880,19 @@ textarea.form-control-lg {
   width: 4.8rem;
   border-radius: 1rem;
   background-color: rgba(229, 159, 150, 0.3411764706);
+}
+
+.form-xlg {
+  padding: 1.25rem 1rem;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  border-radius: 1rem;
+}
+
+.form-outline-primary input {
+  border-color: #FF3850;
+  border-width: 0.15rem;
+  border-radius: 1rem;
 }
 
 /*# sourceMappingURL=main.css.map */
