@@ -4,13 +4,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace c18_98_m_csharp.Data;
 
-public class ApplicationDbContext : IdentityDbContext
+public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, Guid>
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
         
     }
+
+protected override void OnModelCreating(ModelBuilder builder)
+{
+    base.OnModelCreating(builder);
+
+    builder.Entity<AppUserPet>()
+        .HasKey(x => new { x.TutorId, x.PetId });
+}
     public DbSet<ClinicalAnalysis> ClinicalAnalyses { get; set; }
     public DbSet<ClinicalHistory> ClinicalHistories { get; set; }
     // public DbSet<ClinicalHistoryEntry> ClinicalHistoryEntries { get; set; }
@@ -24,4 +32,7 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<VaccinationCard> VaccinationCards { get; set; }
     // public DbSet<VaccinationCardEntry> VaccinationCardEntries { get; set; }
     public DbSet<VetService> VetServices { get; set; }
+    public DbSet<AppUser> AppUsers { get; set; }
+    public DbSet<AppRole> AppRoles { get; set; }
+    public DbSet<AppUserPet> AppUserPets { get; set; }
 }
