@@ -7,22 +7,43 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using c18_98_m_csharp.Data;
 using c18_98_m_csharp.Models;
+using System.Formats.Asn1;
+using System.ComponentModel;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
+using Microsoft.AspNetCore.Identity;
 
 namespace c18_98_m_csharp.Controllers
 {
     public class PetsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<AppUser> _userManager;
 
-        public PetsController(ApplicationDbContext context)
+        public PetsController(ApplicationDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Pets
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Pets.ToListAsync());
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var userPets = await GetUserPets(user);
+            return View(userPets);
+        }
+
+        private async Task<List<Pet>> GetUserPets(AppUser user)
+        {
+            return await _context.AppUserPets
+                .Where(x => x.TutorId == user.Id)
+                .Select(x => x.Pet)
+                .ToListAsync();
         }
 
         // GET: Pets/Details/5
