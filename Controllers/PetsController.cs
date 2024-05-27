@@ -82,9 +82,25 @@ namespace c18_98_m_csharp.Controllers
                 pet.Id = Guid.NewGuid();
                 _context.Add(pet);
                 await _context.SaveChangesAsync();
+                // register pet tutor
+                var user = await _userManager.GetUserAsync(User);
+                await RegisterPetTutor(user.Id, pet.Id);
                 return RedirectToAction(nameof(Index));
             }
+            
             return View(pet);
+        }
+
+        private async Task RegisterPetTutor(Guid user, Guid pet)
+        {
+            var appUserPet = new AppUserPet
+            {
+                TutorId = user,
+                PetId = pet
+            };
+            Console.WriteLine(user.ToString() + " " + pet.ToString());
+            _context.Add(appUserPet);
+            await _context.SaveChangesAsync();
         }
 
         // GET: Pets/Edit/5
