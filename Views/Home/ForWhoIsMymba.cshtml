@@ -1,0 +1,27 @@
+@{
+    string[] cardHeader = {
+        "Tutores o familiares de mascotas",
+        "Veterinarias",
+        "Rescatistas"
+    };
+    string[] cardText = {
+        "Personas responsables de cuidar y mantener la salud de sus animales y necesitan acceso fácil y seguro a su información médica.",
+        "Profesionales encargados de la atención médica de las mascotas, que buscan una herramienta eficiente para gestionar y actualizar los historiales clínicos de sus pacientes animales.",
+        "Personas o miembros de refugio que brindan tránsito y cuidado a animales  y necesitan tener a disposición la información médica de sus rescataditos."
+    };
+}
+<section class="grid grid-cols-2">
+    <div class="bg-slate-500"></div>
+    <div class="bg-red-400 flex flex-col py-24">
+        <h2 class="mb-8 text-3xl font-medium text-white text-center">¿Para quiénes es Mymba Pet?</h2>
+        <div class="grid grid-cols-1 mx-auto gap-10">
+        @foreach (var (header, text) in cardHeader.Zip(cardText, (h, t) => (h, t)))
+        {
+            <div class="bg-white p-10 rounded-3xl" style="max-width: 40em;">
+                <h3 class="text-xl font-medium mb-2">@header</h3>
+                <p>@text</p>
+            </div>
+        }
+        </div>
+    </div>
+</section>

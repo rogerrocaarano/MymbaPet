@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Mymba Pet</title>
+    <link rel="stylesheet" href="~/css/tailwindcss.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Boogaloo:wght@400&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" />
+</head>
+
+<body>
+    <header class="py-3 flex flex-row place-content-between">
+        <partial name="_MymbaLogo" />
+        <partial name="LandingNavPartial" />
+    </header>
+
+
+    @* <partial name="_HeaderPartial" /> *@
+    <main>
+        @RenderBody()
+    </main>
+</body>
+
+</html>

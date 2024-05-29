@@ -1,8 +1,9 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    Layout = "_TailwindcssLayout";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Enlace temporal de Onboarding. <a asp-controller="Home" asp-action="Onboarding">CLICK</a></p>
-</div>
+<partial name="HeroBanner"/>
+<partial name="AboutMymba"/>
+<partial name="ForWhoIsMymba"/>
+<partial name="Features"/>
+<partial name="UserReviews"/>
