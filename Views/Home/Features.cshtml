@@ -1,0 +1,34 @@
+@{
+    string[] reasonsHeader = {
+            "Acceso inmediato a la historia clínica de tu mascota",
+            "Gestión integral de la salud",
+            "Notificaciones y recordatorios",
+            "Soporte en situaciones de Emergencia"
+    };
+    string[] reasonsText = {
+            "Consultá y actualizá la información médica de tu mascota de forma rápida y sencilla, sin depender de registros en papel.",
+            "Registrá y mantené un seguimiento detallado de las consultas, vacunas, tratamientos y otros eventos médicos de tus mascotas, proporcionando una visión completa y accesible de su salud.",
+            "Recibí notificaciones automáticas para recordatorios de turnos, medicación, paseos y demás actividades, asegurando que nunca olvides un evento importante en el cuidado de tu mascota.",
+            "Encontrá información sobre veterinarias de guardia, horarios, especialidades y turnos disponibles rápidamente, garantizando que tu mascota reciba atención cuando más lo necesita."
+    };
+}
+
+<section class="grid md:grid-cols-2">
+    <div class="text-center grid grid-cols-1 place-content-center">
+        <div class="w-48 h-48 rounded-full mx-auto mb-3 shadow-md bg-[url('/images/home/profile-1.jpg')] bg-cover"></div>
+        <h2 class="text-3xl font-medium mb-3">¿Por qué elegir Mymba Pet?</h2>
+        <p>
+            Nuestra aplicación integral centraliza y automatiza la gestión de registros médicos de tus mascotas.
+        </p>
+    </div>
+    
+    <div class="grid md:grid-cols-2 gap-14 px-10 py-24">
+        @foreach (var (header, text) in reasonsHeader.Zip(reasonsText, (h, t) => (h, t)))
+        {
+            <div>
+                <h3 class="text-xl font-medium">@header</h3>
+                <p>@text</p>
+            </div>
+        }
+    </div>
+</section>

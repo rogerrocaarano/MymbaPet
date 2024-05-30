@@ -1,0 +1,57 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="flex flex-col justify-center px-6 py-12 lg:px-8 max-w-96 mx-auto">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+        <partial name="/Views/Shared/_MymbaLogoVert.cshtml" />
+        <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight">Registrate en Mymba</h2>
+    </div>
+
+    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="space-y-6">
+            <div>
+                <label for="email" class="block text-sm font-medium leading-6">Correo electrónico</label>
+                <div class="mt-2">
+                    <input asp-for="Input.Email" autocomplete="username" aria-required="true"
+                        placeholder="nombre@mymba.com"
+                        class="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6" />
+                </div>
+            </div>
+
+            <div>
+                <div class="flex items-center justify-between">
+                    <label for="password" class="block text-sm font-medium leading-6">Contraseña</label>
+                </div>
+                <div class="mt-2">
+                    <input asp-for="Input.Password" autocomplete="new-password" aria-required="true"
+                        placeholder="Contraseña"
+                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6" />
+                </div>
+                <div class="mt-2">
+                    <input asp-for="Input.ConfirmPassword" autocomplete="new-password" aria-required="true"
+                        placeholder="Repite tu contraseña"
+                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6" />
+                </div>
+            </div>
+
+            <div>
+                <button id="login-submit" type="submit" class="w-full btn-lg bg-primary px-3 py-1.5 text-sm text-white">
+                    Registrarse
+                </button>
+            </div>
+        </form>
+
+        <p class="mt-10 text-center text-sm text-gray-500">
+            ¿Ya tenés una cuenta?
+            <a asp-area="Identity" asp-page="/Account/Login" class="font-semibold leading-6 text-primary">¡Iniciá
+                sesión!</a>
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

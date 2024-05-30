@@ -1,0 +1,12 @@
+#heroBanner {
+    height: 100vh;
+    background-image: url('/images/home/bg-heroBanner.jpg');
+    background-size: cover;
+    background-position: center;
+}
+#aboutMymba {
+    height: 30em;
+}
+#aboutMymba .container {
+    max-width: 60em;
+}

@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn-lg {
+    padding: 1em 2em;
+    border-radius: 0.5em;
+    text-align: center;
+}
+
+.btn {
+    padding: 0.5em 1.5em;
+    border-radius: 0.5em;
+    text-align: center;
+}
+
+body {
+    font-family: "Roboto";
+    color: #393b41;
+}
+
+.font-mymba {
+    font-family: Boogaloo;
+}
