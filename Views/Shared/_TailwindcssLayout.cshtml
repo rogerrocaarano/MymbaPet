@@ -20,10 +20,6 @@
     <header class="py-3 px-5 flex flex-row place-content-between">
         <partial name="_MymbaLogo" />
         <div class="flex flex-row gap-8">
-            @if (ViewData["Title"] != null && ViewData["Title"].ToString() == "Inicio")
-            {
-                <partial name="LandingNavPartial" />
-            }
             <partial name="_LoginPartial" />
         </div>
     </header>

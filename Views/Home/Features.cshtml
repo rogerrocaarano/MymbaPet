@@ -13,7 +13,7 @@
     };
 }
 
-<section class="grid grid-cols-2">
+<section class="grid md:grid-cols-2">
     <div class="text-center grid grid-cols-1 place-content-center">
         <div class="w-48 h-48 rounded-full mx-auto mb-3 shadow-md bg-[url('/images/home/profile-1.jpg')] bg-cover"></div>
         <h2 class="text-3xl font-medium mb-3">¿Por qué elegir Mymba Pet?</h2>
@@ -22,7 +22,7 @@
         </p>
     </div>
     
-    <div class="grid grid-cols-2 gap-14 px-10 py-24">
+    <div class="grid md:grid-cols-2 gap-14 px-10 py-24">
         @foreach (var (header, text) in reasonsHeader.Zip(reasonsText, (h, t) => (h, t)))
         {
             <div>
