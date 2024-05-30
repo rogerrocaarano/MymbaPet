@@ -83,7 +83,7 @@ namespace c18_98_m_csharp.Controllers
         // GET: Pets/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null)
+            if (id == null || !UserIsPetTutor(id.Value))
             {
                 return NotFound();
             }
@@ -134,7 +134,7 @@ namespace c18_98_m_csharp.Controllers
         // GET: Pets/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null)
+            if (id == null || !UserIsPetTutor(id.Value))
             {
                 return NotFound();
             }
