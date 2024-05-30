@@ -38,7 +38,7 @@ namespace c18_98_m_csharp.Controllers
         // GET: Pets/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null)
+            if (id == null || !UserIsPetTutor(id.Value))
             {
                 return NotFound();
             }
@@ -183,10 +183,16 @@ namespace c18_98_m_csharp.Controllers
                 .ToListAsync();
         }
 
-        private bool UserIsPetTutor(AppUser user, Pet pet)
+        private bool UserIsPetTutor(Guid petId)
+        {
+            var user = _userManager.GetUserAsync(User).Result;
+            return UserIsPetTutor(user, petId);
+        }
+
+        private bool UserIsPetTutor(AppUser user, Guid petId)
         {
             var userPets = GetUserPets(user).Result;
-            return userPets.Any(x => x.Id == pet.Id);
+            return userPets.Any(x => x.Id == petId);
         }
 
         private async Task RegisterPetTutor(Guid user, Guid pet)
