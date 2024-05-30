@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html class="scroll-smooth" lang="es">
 
 <head>
     <meta charset="utf-8" />
@@ -8,12 +8,24 @@
     <link rel="stylesheet" href="~/css/tailwindcss.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Boogaloo:wght@400&display=swap" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" />
+
+    @if (ViewData["Title"] != null && ViewData["Title"].ToString() == "Inicio")
+    {
+        <link rel="stylesheet" href="~/css/landing.css" />
+    }
+
 </head>
 
 <body>
-    <header class="py-3 flex flex-row place-content-between">
+    <header class="py-3 px-5 flex flex-row place-content-between">
         <partial name="_MymbaLogo" />
-        <partial name="LandingNavPartial" />
+        <div class="flex flex-row gap-8">
+            @if (ViewData["Title"] != null && ViewData["Title"].ToString() == "Inicio")
+            {
+                <partial name="LandingNavPartial" />
+            }
+            <partial name="_LoginPartial" />
+        </div>
     </header>
 
 
@@ -21,6 +33,7 @@
     <main>
         @RenderBody()
     </main>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 
 </html>
