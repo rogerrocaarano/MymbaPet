@@ -1,6 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["Views/**/*.cshtml"],
+  content: [
+    "Views/**/*.cshtml",
+    "Areas/**/*.cshtml",
+  ],
   theme: {
     extend: {
       colors: {
@@ -11,6 +14,6 @@ module.exports = {
   plugins: [
     require('@tailwindcss/forms'),
   ],
-  safelist: [{ pattern: /./}]
+  // safelist: [{ pattern: /./}]
 }
 
