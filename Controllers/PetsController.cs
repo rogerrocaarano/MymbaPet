@@ -38,14 +38,6 @@ namespace c18_98_m_csharp.Controllers
             return View(userPets);
         }
 
-        private async Task<List<Pet>> GetUserPets(AppUser user)
-        {
-            return await _context.AppUserPets
-                .Where(x => x.TutorId == user.Id)
-                .Select(x => x.Pet)
-                .ToListAsync();
-        }
-
         // GET: Pets/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
@@ -87,20 +79,8 @@ namespace c18_98_m_csharp.Controllers
                 await RegisterPetTutor(user.Id, pet.Id);
                 return RedirectToAction(nameof(Index));
             }
-            
-            return View(pet);
-        }
 
-        private async Task RegisterPetTutor(Guid user, Guid pet)
-        {
-            var appUserPet = new AppUserPet
-            {
-                TutorId = user,
-                PetId = pet
-            };
-            Console.WriteLine(user.ToString() + " " + pet.ToString());
-            _context.Add(appUserPet);
-            await _context.SaveChangesAsync();
+            return View(pet);
         }
 
         // GET: Pets/Edit/5
@@ -190,6 +170,26 @@ namespace c18_98_m_csharp.Controllers
         private bool PetExists(Guid id)
         {
             return _context.Pets.Any(e => e.Id == id);
+        }
+
+        private async Task<List<Pet>> GetUserPets(AppUser user)
+        {
+            return await _context.AppUserPets
+                .Where(x => x.TutorId == user.Id)
+                .Select(x => x.Pet)
+                .ToListAsync();
+        }
+
+        private async Task RegisterPetTutor(Guid user, Guid pet)
+        {
+            var appUserPet = new AppUserPet
+            {
+                TutorId = user,
+                PetId = pet
+            };
+            Console.WriteLine(user.ToString() + " " + pet.ToString());
+            _context.Add(appUserPet);
+            await _context.SaveChangesAsync();
         }
     }
 }
