@@ -13,3 +13,12 @@
     border-radius: 0.5em;
     text-align: center;
 }
+
+body {
+    font-family: "Roboto";
+    color: #393b41;
+}
+
+.font-mymba {
+    font-family: Boogaloo;
+}

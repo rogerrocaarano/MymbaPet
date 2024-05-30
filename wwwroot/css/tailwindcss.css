@@ -865,10 +865,6 @@ select {
   height: 12rem;
 }
 
-.h-full {
-  height: 100%;
-}
-
 .w-10 {
   width: 2.5rem;
 }
@@ -1112,6 +1108,11 @@ select {
   line-height: 2.25rem;
 }
 
+.text-6xl {
+  font-size: 3.75rem;
+  line-height: 1;
+}
+
 .text-sm {
   font-size: 0.875rem;
   line-height: 1.25rem;
@@ -1217,6 +1218,15 @@ select {
   padding: 0.5em 1.5em;
   border-radius: 0.5em;
   text-align: center;
+}
+
+body {
+  font-family: "Roboto";
+  color: #393b41;
+}
+
+.font-mymba {
+  font-family: Boogaloo;
 }
 
 .placeholder\:text-gray-400::-moz-placeholder {
