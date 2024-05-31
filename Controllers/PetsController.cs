@@ -12,9 +12,11 @@ using System.ComponentModel;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace c18_98_m_csharp.Controllers
 {
+    [Authorize]
     public class PetsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -29,27 +31,14 @@ namespace c18_98_m_csharp.Controllers
         // GET: Pets
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            var userPets = await GetUserPets(user);
+            var userPets = await GetUserPets();
             return View(userPets);
-        }
-
-        private async Task<List<Pet>> GetUserPets(AppUser user)
-        {
-            return await _context.AppUserPets
-                .Where(x => x.TutorId == user.Id)
-                .Select(x => x.Pet)
-                .ToListAsync();
         }
 
         // GET: Pets/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null)
+            if (id == null || !UserIsPetTutor(id.Value))
             {
                 return NotFound();
             }
@@ -87,26 +76,14 @@ namespace c18_98_m_csharp.Controllers
                 await RegisterPetTutor(user.Id, pet.Id);
                 return RedirectToAction(nameof(Index));
             }
-            
-            return View(pet);
-        }
 
-        private async Task RegisterPetTutor(Guid user, Guid pet)
-        {
-            var appUserPet = new AppUserPet
-            {
-                TutorId = user,
-                PetId = pet
-            };
-            Console.WriteLine(user.ToString() + " " + pet.ToString());
-            _context.Add(appUserPet);
-            await _context.SaveChangesAsync();
+            return View(pet);
         }
 
         // GET: Pets/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null)
+            if (id == null || !UserIsPetTutor(id.Value))
             {
                 return NotFound();
             }
@@ -157,7 +134,7 @@ namespace c18_98_m_csharp.Controllers
         // GET: Pets/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null)
+            if (id == null || !UserIsPetTutor(id.Value))
             {
                 return NotFound();
             }
@@ -190,6 +167,43 @@ namespace c18_98_m_csharp.Controllers
         private bool PetExists(Guid id)
         {
             return _context.Pets.Any(e => e.Id == id);
+        }
+
+        private async Task<List<Pet>> GetUserPets()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            return await GetUserPets(user);
+        }
+
+        private async Task<List<Pet>> GetUserPets(AppUser user)
+        {
+            return await _context.AppUserPets
+                .Where(x => x.TutorId == user.Id)
+                .Select(x => x.Pet)
+                .ToListAsync();
+        }
+
+        private bool UserIsPetTutor(Guid petId)
+        {
+            var user = _userManager.GetUserAsync(User).Result;
+            return UserIsPetTutor(user, petId);
+        }
+
+        private bool UserIsPetTutor(AppUser user, Guid petId)
+        {
+            var userPets = GetUserPets(user).Result;
+            return userPets.Any(x => x.Id == petId);
+        }
+
+        private async Task RegisterPetTutor(Guid user, Guid pet)
+        {
+            var appUserPet = new AppUserPet
+            {
+                TutorId = user,
+                PetId = pet
+            };
+            _context.Add(appUserPet);
+            await _context.SaveChangesAsync();
         }
     }
 }
