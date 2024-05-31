@@ -13,12 +13,12 @@
 <section id="forWhoIsMymba" class="grid md:grid-cols-2">
     <div class="bg-[url('/images/home/bg-forwho.jpg')] bg-cover"></div>
     <div class="bg-red-400 flex flex-col py-24">
-        <h2 class="mb-8 text-3xl font-medium text-white text-center">¿Para quiénes es Mymba Pet?</h2>
+        <h2 class="mb-8 text-3xl font-medium text-white text-center font-sans-header">¿Para quiénes es Mymba Pet?</h2>
         <div class="grid grid-cols-1 mx-auto gap-10">
         @foreach (var (header, text) in cardHeader.Zip(cardText, (h, t) => (h, t)))
         {
             <div class="bg-white p-10 rounded-3xl" style="max-width: 40em;">
-                <h3 class="text-xl font-medium mb-2">@header</h3>
+                <h3 class="text-xl font-medium mb-2 font-sans-header">@header</h3>
                 <p>@text</p>
             </div>
         }

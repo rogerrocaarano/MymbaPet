@@ -46,7 +46,7 @@ html,
   -o-tab-size: 4;
      tab-size: 4;
   /* 3 */
-  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: "Hind", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   /* 4 */
   font-feature-settings: normal;
   /* 5 */
@@ -1098,6 +1098,18 @@ select {
   text-align: center;
 }
 
+.font-brand {
+  font-family: "Boogaloo", cursive;
+}
+
+.font-sans-header {
+  font-family: "Poppins", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.font-sans {
+  font-family: "Hind", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
@@ -1133,6 +1145,18 @@ select {
 
 .font-semibold {
   font-weight: 600;
+}
+
+.font-light {
+  font-weight: 300;
+}
+
+.font-extralight {
+  font-weight: 200;
+}
+
+.italic {
+  font-style: italic;
 }
 
 .leading-6 {
@@ -1221,12 +1245,8 @@ select {
 }
 
 body {
-  font-family: "Roboto";
+  /* font-family: "Roboto"; */
   color: #393b41;
-}
-
-.font-mymba {
-  font-family: Boogaloo;
 }
 
 .placeholder\:text-gray-400::-moz-placeholder {
