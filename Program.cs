@@ -6,28 +6,17 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Get proper connection string from environment variable or appsettings.json
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
-                       throw new InvalidOperationException(
-                           "Connection string 'DefaultConnection' not found."
-                           );
-
-if (connectionString == "GET_FROM_ENV")
-{
-    connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") ??
-                       throw new InvalidOperationException(
-                           "Environment variable 'DB_CONNECTION_STRING' not found."
-                           );
-}
-
-builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
-
 // Add services to the container.
+// Database
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(connectionString));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+// Email
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.AddTransient<IEmailSender, MailService>();
 
+// Identity
 builder.Services.AddDefaultIdentity<AppUser>(
 options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
