@@ -6,6 +6,13 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Builder configuration sources
+builder.Configuration
+.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+.AddEnvironmentVariables("DOTNET_")
+.AddEnvironmentVariables("MYMBAAPP_");
+
 // Add services to the container.
 // Database
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
