@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 module.exports = {
   content: [
     "Views/**/*.cshtml",
@@ -6,6 +8,11 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'sans': ['"Hind"', ...defaultTheme.fontFamily.sans],
+        'sans-header': ['"Poppins"', ...defaultTheme.fontFamily.sans],
+        'brand': ['"Boogaloo"', 'cursive'],
+      },
       colors: {
         primary: '#FF3850',
       }
