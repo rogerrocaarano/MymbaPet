@@ -31,6 +31,7 @@ options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 // Database seeder
+builder.Services.Configure<DbSeederSettings>(builder.Configuration.GetSection("DbSeederSettings"));
 builder.Services.AddScoped<IDbSeeder, DbSeeder>();
 
 builder.Services.AddControllersWithViews();
@@ -67,6 +68,7 @@ using (var scope = app.Services.CreateScope())
     var seeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
     await seeder.MigrateDatabase();
     await seeder.SeedRoles();
+    await seeder.AddRoleToAdminUser();
 }
 
 app.Run();

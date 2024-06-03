@@ -1,11 +1,18 @@
 using c18_98_m_csharp.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace c18_98_m_csharp.Services.DbSeeder;
 
-public class DbSeeder(ApplicationDbContext context, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager) : IDbSeeder
+public class DbSeeder(
+    IOptions<DbSeederSettings> dbSeederSettingsOptions,
+    ApplicationDbContext context,
+    UserManager<AppUser> userManager,
+    RoleManager<AppRole> roleManager
+    ) : IDbSeeder
 {
+    private readonly DbSeederSettings _dbSeederSettings = dbSeederSettingsOptions.Value;
     private readonly ApplicationDbContext _context = context;
     private readonly UserManager<AppUser> _userManager = userManager;
     private readonly RoleManager<AppRole> _roleManager = roleManager;
@@ -39,5 +46,23 @@ public class DbSeeder(ApplicationDbContext context, UserManager<AppUser> userMan
         };
         await _roleManager.CreateAsync(role);
         Console.WriteLine($"Role {roleName} created");
+    }
+
+    public async Task AddRoleToAdminUser()
+    {
+        var AdminUser = await _userManager.FindByEmailAsync(_dbSeederSettings.AdminUser);
+        if (AdminUser == null)
+        {
+            Console.WriteLine("Admin user not found");
+            return;
+        }
+        if (await _userManager.IsInRoleAsync(AdminUser, Roles.Admin.ToString()))
+        {
+            Console.WriteLine("Admin user already has Admin role");
+            return;
+        }
+        Console.WriteLine("Adding Admin role to Admin user");
+        await _userManager.AddToRoleAsync(AdminUser, Roles.Admin.ToString());
+        await _userManager.ConfirmEmailAsync(AdminUser, await _userManager.GenerateEmailConfirmationTokenAsync(AdminUser));
     }
 }
