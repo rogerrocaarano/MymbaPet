@@ -1,5 +1,4 @@
 ﻿## Descripción del proyecto
-
 ¡Hola!
 
 Estamos desarrollando una aplicación innovadora que te permitirá acceder a la historia clínica de tu mascota las 24
@@ -16,9 +15,22 @@ verdadera solución a los desafíos que enfrentas diariamente.
 ### Requisitos
 - .NET framework 8.0
 - PostgreSQL
+- Node.js
 
-### Configuración de la base de datos
-1. Crear un usuario en PostgreSQL con permisos para crear bases de datos.
-2. Crear una base de datos con un nombre a elección.
-3. Añadir a appsettings.Development.json la cadena de conexión a la base de datos creada.
-4. Ejecutar el comando `dotnet ef database update` para crear las tablas necesarias en la base de datos.
+### Base de datos
+- Configurar la cadena de conexión de la base de datos mediante el archivo `appsettings.json` o variables de entorno.
+- Las migraciones se aplicarán de manera automática al iniciar la aplicación.
+
+### Módulos node
+#### Tailwindcss
+Los archivos css base de tailwind se encuentran en el directorio tools/tailwindcss
+Exportar el archivo css minimizado de tailwind en el directorio wwwroot/css mediante el siguiente comando:
+
+`npx tailwindcss -i tools/tailwindcss/input.css -o wwwroot/css/tailwindcss.css --watch`
+
+### Configuración IMAP
+Para el envío de correos electronicos configurar MailSettings.
+
+### Uso de variables de entorno
+Al momento de cargar variables de entorno del sistema para reemplazar los valores de appsettings.json se admiten los
+siguientes prefijos `DOTNET_` o `MYMBA_`
