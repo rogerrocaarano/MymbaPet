@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using c18_98_m_csharp.Data;
 using c18_98_m_csharp.Services.MailKit;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using c18_98_m_csharp.Services.DbSeeder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,7 +27,13 @@ builder.Services.AddTransient<IEmailSender, MailService>();
 // Identity
 builder.Services.AddDefaultIdentity<AppUser>(
 options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<AppRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+// Database seeder
+builder.Services.Configure<DbSeederSettings>(builder.Configuration.GetSection("DbSeederSettings"));
+builder.Services.AddScoped<IDbSeeder, DbSeeder>();
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -55,11 +62,13 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 
-// Migrate latest database changes during application startup
+// Seed database
 using (var scope = app.Services.CreateScope())
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    dbContext.Database.Migrate();
+    var seeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
+    await seeder.MigrateDatabase();
+    await seeder.SeedRoles();
+    await seeder.AddRoleToAdminUser();
 }
 
 app.Run();
