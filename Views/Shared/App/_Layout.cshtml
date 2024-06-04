@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="scroll-smooth" lang="es">
+<html class="scroll-smooth font-ui" lang="es">
 
 <head>
     <meta charset="utf-8" />
@@ -23,7 +23,7 @@
             <partial name="/Views/Shared/App/UserWidget.cshtml" />
         </div>
     </nav>
-    <main class="px-10 py-3">
+    <main class="container mx-auto mt-10 px-5">
         @RenderBody()
     </main>
     @await RenderSectionAsync("Scripts", required: false)
