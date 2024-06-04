@@ -28,9 +28,12 @@ Exportar el archivo css minimizado de tailwind en el directorio wwwroot/css medi
 
 `npx tailwindcss -i tools/tailwindcss/input.css -o wwwroot/css/tailwindcss.css --watch`
 
-### Configuración IMAP
+### Configuración SMTP
 Para el envío de correos electronicos configurar MailSettings.
 
 ### Uso de variables de entorno
 Al momento de cargar variables de entorno del sistema para reemplazar los valores de appsettings.json se admiten los
-siguientes prefijos `DOTNET_` o `MYMBA_`
+siguientes prefijos `DOTNET_` o `MYMBA_`.
+
+El archivo appsettings.json es provisto a modo de documentación de configuración, 
+este archivo debe ser reemplazado con la configuración adecuada para la aplicación.
