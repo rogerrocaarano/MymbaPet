@@ -1,31 +1,30 @@
 @model IEnumerable<c18_98_m_csharp.Models.Pet>
 
 @{
-    ViewData["Title"] = "Index";
-    @* Layout = "~/Views/Shared/_Layout.cshtml"; *@
+    ViewData["Title"] = "Mis mascotas";
 }
 
-<div class="container mx-auto px-8">
-    <div class="text-3xl mb-4">¡Hola Usuario!</div>
+<h2 class="text-4xl text-primary font-medium mb-10">Mis mascotas</h2>
 
-    <div class="container grid grid-cols-1 gap-10">
-        @foreach (var pet in Model)
-        {
-            <div class="flex flex-row gap-8 bg-yellow-200 rounded-lg p-4 shadow-md">
-                <div class="w-24 h-24 bg-slate-400 rounded-full"></div>
-                <div class="flex flex-col justify-center">
-                    <div>@pet.Species @pet.Breed</div>
-                    <div class="text-2xl font-medium">@pet.Name</div>
-                    <div>@pet.Birthdate</div>
-                </div>
-            </div>
-        }
-        <a asp-action="Create" class="btn bg-green-500">Añadir mascota</a>
+@{
+    if (Model.Count() == 0)
+    {
+        <partial name="NoPetsWidget" />
+    }
+}
+
+@foreach (var pet in Model)
+{
+    <div class="flex flex-row gap-8 bg-ui-light-section rounded-lg p-4 shadow-md">
+        <div class="w-24 h-24 bg-slate-400 rounded-full"></div>
+        <div class="flex flex-col justify-center">
+            <div>@pet.Species @pet.Breed</div>
+            <div class="text-2xl font-medium">@pet.Name</div>
+            <div>@pet.Birthdate</div>
+        </div>
     </div>
-
-
-
-</div>
+}
+@* <a asp-action="Create" class="btn bg-green-500">Añadir mascota</a> *@
 
 
 @* <h1>Index</h1>
