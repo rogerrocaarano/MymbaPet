@@ -12,10 +12,20 @@ module.exports = {
         'sans': ['"Hind"', ...defaultTheme.fontFamily.sans],
         'sans-header': ['"Poppins"', ...defaultTheme.fontFamily.sans],
         'brand': ['"Boogaloo"', 'cursive'],
+        'ui': ['"Roboto"', ...defaultTheme.fontFamily.sans],
       },
       colors: {
-        primary: '#FF3850',
-      }
+        primary: '#7C58D3',
+        secondary: '#221956',
+        ui: {
+          light: {
+            section: '#FFFFFF',
+            page: '#F3F3F1',
+            contrast: '#DDE1E6',
+            hover: '#F2F8F5'
+          }
+        }
+      },
     },
   },
   plugins: [
