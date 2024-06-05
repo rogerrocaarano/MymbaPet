@@ -8,7 +8,7 @@ namespace c18_98_m_csharp.Services.Pets;
 
 public class PetManager(
     ApplicationDbContext context)
-    : IListPets, IPetClaims
+    : IListPets, IPetClaims, IAddPet
 {
     public async Task<List<Pet>> GetPets(AppUser user)
     {
@@ -34,6 +34,26 @@ public class PetManager(
         return context.Pets.Any(e => e.Id == id);
     }
 
+    public async Task RegisterPet(Pet pet, AppUser user)
+    {
+        pet.Id = Guid.NewGuid();
+        context.Add(pet);
+        await context.SaveChangesAsync();
+        await CreateClinicalHistory(pet);
+        await AssignPetToTutor(pet, user);
+    }
+
+    public async Task CreateClinicalHistory(Pet pet)
+    {
+        var clinicalHistory = new ClinicalHistory
+        {
+            Id = Guid.NewGuid(),
+            PetId = pet.Id
+        };
+        context.Add(clinicalHistory);
+        await context.SaveChangesAsync();
+    }
+
     public async Task AssignPetToTutor(Pet pet, AppUser tutor)
     {
         var tutorPet = new TutorPet
@@ -46,6 +66,16 @@ public class PetManager(
     }
 
     public Task ChangePetTutor(Pet pet, AppUser tutor)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task AuthorizeVeterinarian(Pet pet, AppUser vet)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task DeAuthorizeVeterinarian(Pet pet, AppUser vet)
     {
         throw new NotImplementedException();
     }

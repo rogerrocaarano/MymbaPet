@@ -72,12 +72,8 @@ public class PetsController(
     {
         if (ModelState.IsValid)
         {
-            pet.Id = Guid.NewGuid();
-            context.Add(pet);
-            await context.SaveChangesAsync();
-            // register pet tutor
             var user = await userManager.GetUserAsync(User);
-            await petManager.AssignPetToTutor(pet, user);
+            await petManager.RegisterPet(pet, user);
             return RedirectToAction(nameof(Index));
         }
 

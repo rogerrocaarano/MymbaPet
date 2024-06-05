@@ -7,5 +7,4 @@ public interface IListPets
     Task<List<Pet>> GetPets(AppUser user);
     Task<List<Pet>> GetPatients(AppUser vet);
     bool UserIsPetTutor(AppUser tutor, Guid petId);
-    bool PetExists(Guid id);
 }

@@ -6,4 +6,6 @@ public interface IPetClaims
 {
     Task AssignPetToTutor(Pet pet, AppUser tutor);
     Task ChangePetTutor(Pet pet, AppUser tutor);
+    Task AuthorizeVeterinarian(Pet pet, AppUser vet);
+    Task DeAuthorizeVeterinarian(Pet pet, AppUser vet);
 }
