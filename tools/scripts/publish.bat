@@ -1,6 +1,7 @@
 @REM Usage: publish.bat remoteName websiteUrl
 rmdir /s /q ..\..\bin\publish
 @REM Publish the application to the specified folder
+npx tailwindcss -i tools/tailwindcss/input.css -o wwwroot/css/tailwindcss.css
 dotnet publish ..\..\c18-98-m-csharp.csproj -c Release -o ..\..\bin\publish
 
 @REM Copy to server
