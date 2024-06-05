@@ -12,8 +12,8 @@ using c18_98_m_csharp.Data;
 namespace c18_98_m_csharp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240527211651_InicialCreate")]
-    partial class InicialCreate
+    [Migration("20240605015524_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -288,13 +288,13 @@ namespace c18_98_m_csharp.Data.Migrations
                     b.Property<string>("Color")
                         .HasColumnType("text");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
                     b.Property<string>("MicrochipId")
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Notes")
                         .HasColumnType("text");
 
                     b.Property<bool>("Sex")

@@ -15,5 +15,5 @@ public class Pet
     }
     public bool Sex { get; set; }
     public string? MicrochipId { get; set; }
-    public string? Description { get; set; }
+    public string? Notes { get; set; }
 }

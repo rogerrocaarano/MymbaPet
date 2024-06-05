@@ -53,18 +53,20 @@ namespace c18_98_m_csharp.Controllers
             return View(pet);
         }
 
-        // GET: Pets/Create
-        public IActionResult Create()
+
+
+        // GET: Pets/AddPet
+        public IActionResult AddPet()
         {
             return View();
         }
 
-        // POST: Pets/Create
+        // POST: Pets/AddPet
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Breed,Color,Species,Birthdate,Sex,MicrochipId,Description")] Pet pet)
+        public async Task<IActionResult> AddPet([Bind("Id,Name,Breed,Color,Species,Birthdate,Sex,MicrochipId,Notes")] Pet pet)
         {
             if (ModelState.IsValid)
             {
@@ -80,28 +82,30 @@ namespace c18_98_m_csharp.Controllers
             return View(pet);
         }
 
-        // GET: Pets/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
-        {
-            if (id == null || !UserIsPetTutor(id.Value))
-            {
-                return NotFound();
-            }
 
-            var pet = await _context.Pets.FindAsync(id);
-            if (pet == null)
-            {
-                return NotFound();
-            }
-            return View(pet);
-        }
+
+        // // GET: Pets/Edit/5
+        // public async Task<IActionResult> Edit(Guid? id)
+        // {
+        //     if (id == null || !UserIsPetTutor(id.Value))
+        //     {
+        //         return NotFound();
+        //     }
+
+        //     var pet = await _context.Pets.FindAsync(id);
+        //     if (pet == null)
+        //     {
+        //         return NotFound();
+        //     }
+        //     return View(pet);
+        // }
 
         // POST: Pets/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Breed,Color,Species,Birthdate,Sex,MicrochipId,Description")] Pet pet)
+        public async Task<IActionResult> Update(Guid id, [Bind("Id,Name,Breed,Color,Species,Birthdate,Sex,MicrochipId,Notes")] Pet pet)
         {
             if (id != pet.Id)
             {
