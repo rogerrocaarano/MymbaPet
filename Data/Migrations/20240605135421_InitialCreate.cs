@@ -52,17 +52,6 @@ namespace c18_98_m_csharp.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClinicalAnalyses",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ClinicalAnalyses", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ClinicalHistories",
                 columns: table => new
                 {
@@ -71,28 +60,6 @@ namespace c18_98_m_csharp.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ClinicalHistories", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MedicalEvaluations",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MedicalEvaluations", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PetCenters",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PetCenters", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -112,66 +79,6 @@ namespace c18_98_m_csharp.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Pets", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Prescriptions",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Prescriptions", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Surgeries",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Surgeries", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "VaccinationCards",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_VaccinationCards", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Vaccinations",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Vaccinations", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "VetServices",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    RequestDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Status = table.Column<string>(type: "text", nullable: false),
-                    LastUpdated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    IsEmergency = table.Column<bool>(type: "boolean", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_VetServices", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -281,7 +188,7 @@ namespace c18_98_m_csharp.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AppUserPets",
+                name: "TutorPets",
                 columns: table => new
                 {
                     TutorId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -289,25 +196,20 @@ namespace c18_98_m_csharp.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AppUserPets", x => new { x.TutorId, x.PetId });
+                    table.PrimaryKey("PK_TutorPets", x => new { x.TutorId, x.PetId });
                     table.ForeignKey(
-                        name: "FK_AppUserPets_AspNetUsers_TutorId",
+                        name: "FK_TutorPets_AspNetUsers_TutorId",
                         column: x => x.TutorId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AppUserPets_Pets_PetId",
+                        name: "FK_TutorPets_Pets_PetId",
                         column: x => x.PetId,
                         principalTable: "Pets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AppUserPets_PetId",
-                table: "AppUserPets",
-                column: "PetId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -345,14 +247,16 @@ namespace c18_98_m_csharp.Data.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TutorPets_PetId",
+                table: "TutorPets",
+                column: "PetId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "AppUserPets");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -369,40 +273,19 @@ namespace c18_98_m_csharp.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ClinicalAnalyses");
-
-            migrationBuilder.DropTable(
                 name: "ClinicalHistories");
 
             migrationBuilder.DropTable(
-                name: "MedicalEvaluations");
-
-            migrationBuilder.DropTable(
-                name: "PetCenters");
-
-            migrationBuilder.DropTable(
-                name: "Prescriptions");
-
-            migrationBuilder.DropTable(
-                name: "Surgeries");
-
-            migrationBuilder.DropTable(
-                name: "VaccinationCards");
-
-            migrationBuilder.DropTable(
-                name: "Vaccinations");
-
-            migrationBuilder.DropTable(
-                name: "VetServices");
-
-            migrationBuilder.DropTable(
-                name: "Pets");
+                name: "TutorPets");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Pets");
         }
     }
 }

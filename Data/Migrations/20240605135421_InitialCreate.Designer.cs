@@ -12,7 +12,7 @@ using c18_98_m_csharp.Data;
 namespace c18_98_m_csharp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240605015524_InitialCreate")]
+    [Migration("20240605135421_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -115,21 +115,6 @@ namespace c18_98_m_csharp.Data.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("AppUserPet", b =>
-                {
-                    b.Property<Guid>("TutorId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("PetId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("TutorId", "PetId");
-
-                    b.HasIndex("PetId");
-
-                    b.ToTable("AppUserPets");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -239,17 +224,6 @@ namespace c18_98_m_csharp.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("c18_98_m_csharp.Models.ClinicalAnalysis", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ClinicalAnalyses");
-                });
-
             modelBuilder.Entity("c18_98_m_csharp.Models.ClinicalHistory", b =>
                 {
                     b.Property<Guid>("Id")
@@ -259,17 +233,6 @@ namespace c18_98_m_csharp.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ClinicalHistories");
-                });
-
-            modelBuilder.Entity("c18_98_m_csharp.Models.MedicalEvaluation", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MedicalEvaluations");
                 });
 
             modelBuilder.Entity("c18_98_m_csharp.Models.Pet", b =>
@@ -308,105 +271,19 @@ namespace c18_98_m_csharp.Data.Migrations
                     b.ToTable("Pets");
                 });
 
-            modelBuilder.Entity("c18_98_m_csharp.Models.PetCenter", b =>
+            modelBuilder.Entity("c18_98_m_csharp.Models.TutorPet", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("TutorId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("PetCenters");
-                });
-
-            modelBuilder.Entity("c18_98_m_csharp.Models.Prescription", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("PetId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("Id");
+                    b.HasKey("TutorId", "PetId");
 
-                    b.ToTable("Prescriptions");
-                });
+                    b.HasIndex("PetId");
 
-            modelBuilder.Entity("c18_98_m_csharp.Models.Surgery", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Surgeries");
-                });
-
-            modelBuilder.Entity("c18_98_m_csharp.Models.Vaccination", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Vaccinations");
-                });
-
-            modelBuilder.Entity("c18_98_m_csharp.Models.VaccinationCard", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("VaccinationCards");
-                });
-
-            modelBuilder.Entity("c18_98_m_csharp.Models.VetService", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsEmergency")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("RequestDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("VetServices");
-                });
-
-            modelBuilder.Entity("AppUserPet", b =>
-                {
-                    b.HasOne("c18_98_m_csharp.Models.Pet", "Pet")
-                        .WithMany()
-                        .HasForeignKey("PetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("TutorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-
-                    b.Navigation("Pet");
+                    b.ToTable("TutorPets");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -458,6 +335,25 @@ namespace c18_98_m_csharp.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("c18_98_m_csharp.Models.TutorPet", b =>
+                {
+                    b.HasOne("c18_98_m_csharp.Models.Pet", "Pet")
+                        .WithMany()
+                        .HasForeignKey("PetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("TutorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Pet");
                 });
 #pragma warning restore 612, 618
         }

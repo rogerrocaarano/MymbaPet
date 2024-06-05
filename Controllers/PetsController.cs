@@ -31,7 +31,7 @@ namespace c18_98_m_csharp.Controllers
         // GET: Pets
         public async Task<IActionResult> Index()
         {
-            var userPets = await GetUserPets();
+            var userPets = await GetTutorPets();
             return View(userPets);
         }
 
@@ -173,15 +173,15 @@ namespace c18_98_m_csharp.Controllers
             return _context.Pets.Any(e => e.Id == id);
         }
 
-        private async Task<List<Pet>> GetUserPets()
+        private async Task<List<Pet>> GetTutorPets()
         {
             var user = await _userManager.GetUserAsync(User);
-            return await GetUserPets(user);
+            return await GetTutorPets(user);
         }
 
-        private async Task<List<Pet>> GetUserPets(AppUser user)
+        private async Task<List<Pet>> GetTutorPets(AppUser user)
         {
-            return await _context.AppUserPets
+            return await _context.TutorPets
                 .Where(x => x.TutorId == user.Id)
                 .Select(x => x.Pet)
                 .ToListAsync();
@@ -195,13 +195,13 @@ namespace c18_98_m_csharp.Controllers
 
         private bool UserIsPetTutor(AppUser user, Guid petId)
         {
-            var userPets = GetUserPets(user).Result;
+            var userPets = GetTutorPets(user).Result;
             return userPets.Any(x => x.Id == petId);
         }
 
         private async Task RegisterPetTutor(Guid user, Guid pet)
         {
-            var appUserPet = new AppUserPet
+            var appUserPet = new TutorPet
             {
                 TutorId = user,
                 PetId = pet
