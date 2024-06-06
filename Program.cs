@@ -4,6 +4,7 @@ using c18_98_m_csharp.Data;
 using c18_98_m_csharp.Services.MailKit;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using c18_98_m_csharp.Services.DbSeeder;
+using c18_98_m_csharp.Services.Pets;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,9 @@ options => options.SignIn.RequireConfirmedAccount = true)
 // Database seeder
 builder.Services.Configure<DbSeederSettings>(builder.Configuration.GetSection("DbSeederSettings"));
 builder.Services.AddScoped<IDbSeeder, DbSeeder>();
+
+// Use case services
+builder.Services.AddScoped<PetManager>();
 
 builder.Services.AddControllersWithViews();
 

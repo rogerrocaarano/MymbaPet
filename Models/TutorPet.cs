@@ -1,7 +1,8 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using c18_98_m_csharp.Models;
 
-public class AppUserPet
+namespace c18_98_m_csharp.Models;
+
+public class TutorPet
 {
     [ForeignKey("AppUser")]
     public Guid TutorId { get; set; }
