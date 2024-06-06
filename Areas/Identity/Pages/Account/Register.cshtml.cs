@@ -97,6 +97,8 @@ namespace c18_98_m_csharp.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+            
+            public bool IsVeterinarian { get; set; }
         }
 
 
@@ -120,6 +122,14 @@ namespace c18_98_m_csharp.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    if (Input.IsVeterinarian)
+                    {
+                        await _userManager.AddToRoleAsync(user, "Veterinarian");
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, "PetTutor");
+                    }
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
@@ -131,8 +141,8 @@ namespace c18_98_m_csharp.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await _emailSender.SendEmailAsync(Input.Email, "Registro en Mymba Pet",
+                        $"Por favor confirma tu cuenta <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>haciendo click aquí.</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

@@ -15,16 +15,10 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        return View();
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-    
-    public IActionResult Onboarding()
-    {
+        if (User.Identity.IsAuthenticated)
+        {
+            return RedirectToAction("Index", "Pets");
+        }
         return View();
     }
 
