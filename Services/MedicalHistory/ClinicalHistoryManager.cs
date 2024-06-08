@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace c18_98_m_csharp.Services.MedicalHistory;
 
-public class ClinicalHistoryManager(ApplicationDbContext context) : ICrudService
+public class ClinicalHistoryManager(
+    ApplicationDbContext context,
+    ClinicalEntryManager entries) : ICrudService, IClinicalEntries
 {
     public async Task<T> Create<T>(T entity) where T : class
     {
@@ -39,5 +41,20 @@ public class ClinicalHistoryManager(ApplicationDbContext context) : ICrudService
         clinicalHistory.LastUpdated = DateTime.Now;
         context.ClinicalHistories.Update(clinicalHistory);
         await context.SaveChangesAsync();
+    }
+
+    public async Task<ClinicalHistoryEntry> AddEntry(ClinicalHistoryEntry entry)
+    {
+        return await entries.Create(entry);
+    }
+
+    public async Task<ClinicalHistoryEntry> GetEntry(Guid id)
+    {
+        return await entries.Get<ClinicalHistoryEntry>(id);
+    }
+
+    public async Task<List<ClinicalHistoryEntry>> GetAllEntries(ClinicalHistory history)
+    {
+        return await entries.GetAll<ClinicalHistoryEntry>(history);
     }
 }

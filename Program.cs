@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using c18_98_m_csharp.Data;
+using c18_98_m_csharp.Models;
 using c18_98_m_csharp.Services.MailKit;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using c18_98_m_csharp.Services.DbSeeder;
+using c18_98_m_csharp.Services.MedicalHistory;
 using c18_98_m_csharp.Services.Pets;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,6 +40,8 @@ builder.Services.AddScoped<IDbSeeder, DbSeeder>();
 // Use case services
 builder.Services.AddScoped<TutorPetsManager>();
 builder.Services.AddScoped<PatientsManager>();
+builder.Services.AddScoped<ClinicalEntryManager>();
+builder.Services.AddScoped<ClinicalHistoryManager>();
 
 builder.Services.AddControllersWithViews();
 

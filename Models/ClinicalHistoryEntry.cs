@@ -7,13 +7,20 @@ public class ClinicalHistoryEntry
     public Guid Id { get; set; }
     [ForeignKey("ClinicalHistory")] public Guid ClinicalHistoryId { get; set; }
     public ClinicalHistory ClinicalHistory { get; set; }
-    private DateTime _dateTime;
+    private DateTime _created;
 
-    public DateTime DateTime
+    public DateTime Created
     {
-        get => _dateTime;
-        set => _dateTime = DateTime.SpecifyKind(value, DateTimeKind.Utc);
+        get => _created;
+        set => _created = DateTime.SpecifyKind(value, DateTimeKind.Utc);
     }
 
     public string? Description { get; set; }
+    private DateTime _lastUpdated;
+
+    public DateTime LastUpdated
+    {
+        get => _lastUpdated;
+        set => _lastUpdated = DateTime.SpecifyKind(value, DateTimeKind.Utc);
+    }
 }

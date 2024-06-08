@@ -23,6 +23,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     }
 
     public DbSet<ClinicalHistory> ClinicalHistories { get; set; }
+    public DbSet<ClinicalHistoryEntry> ClinicalHistoryEntries { get; set; }
     public DbSet<Pet> Pets { get; set; }
     public DbSet<AppUser> AppUsers { get; set; }
     public DbSet<AppRole> AppRoles { get; set; }
