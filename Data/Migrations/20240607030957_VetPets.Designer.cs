@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using c18_98_m_csharp.Data;
@@ -11,9 +12,11 @@ using c18_98_m_csharp.Data;
 namespace c18_98_m_csharp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240607030957_VetPets")]
+    partial class VetPets
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -227,53 +230,14 @@ namespace c18_98_m_csharp.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("LastEntryId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ClinicalHistories");
-                });
-
-            modelBuilder.Entity("c18_98_m_csharp.Models.ClinicalHistoryEntry", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ClinicalHistoryId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClinicalHistoryId")
-                        .IsUnique();
-
-                    b.ToTable("ClinicalHistoryEntry");
-                });
-
-            modelBuilder.Entity("c18_98_m_csharp.Models.Patients", b =>
-                {
-                    b.Property<Guid>("VetId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("PetId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("VetId", "PetId");
+                    b.HasKey("Id");
 
                     b.HasIndex("PetId");
 
-                    b.ToTable("Patients");
+                    b.ToTable("ClinicalHistories");
                 });
 
             modelBuilder.Entity("c18_98_m_csharp.Models.Pet", b =>
@@ -327,6 +291,21 @@ namespace c18_98_m_csharp.Data.Migrations
                     b.ToTable("TutorPets");
                 });
 
+            modelBuilder.Entity("c18_98_m_csharp.Models.VetPet", b =>
+                {
+                    b.Property<Guid>("VetId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("PetId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("VetId", "PetId");
+
+                    b.HasIndex("PetId");
+
+                    b.ToTable("VetPets");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("AppRole", null)
@@ -378,18 +357,7 @@ namespace c18_98_m_csharp.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("c18_98_m_csharp.Models.ClinicalHistoryEntry", b =>
-                {
-                    b.HasOne("c18_98_m_csharp.Models.ClinicalHistory", "ClinicalHistory")
-                        .WithOne("LastEntry")
-                        .HasForeignKey("c18_98_m_csharp.Models.ClinicalHistoryEntry", "ClinicalHistoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ClinicalHistory");
-                });
-
-            modelBuilder.Entity("c18_98_m_csharp.Models.Patients", b =>
+            modelBuilder.Entity("c18_98_m_csharp.Models.ClinicalHistory", b =>
                 {
                     b.HasOne("c18_98_m_csharp.Models.Pet", "Pet")
                         .WithMany()
@@ -397,15 +365,7 @@ namespace c18_98_m_csharp.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AppUser", "Vet")
-                        .WithMany()
-                        .HasForeignKey("VetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Pet");
-
-                    b.Navigation("Vet");
                 });
 
             modelBuilder.Entity("c18_98_m_csharp.Models.TutorPet", b =>
@@ -427,9 +387,23 @@ namespace c18_98_m_csharp.Data.Migrations
                     b.Navigation("Pet");
                 });
 
-            modelBuilder.Entity("c18_98_m_csharp.Models.ClinicalHistory", b =>
+            modelBuilder.Entity("c18_98_m_csharp.Models.VetPet", b =>
                 {
-                    b.Navigation("LastEntry");
+                    b.HasOne("c18_98_m_csharp.Models.Pet", "Pet")
+                        .WithMany()
+                        .HasForeignKey("PetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AppUser", "Vet")
+                        .WithMany()
+                        .HasForeignKey("VetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pet");
+
+                    b.Navigation("Vet");
                 });
 #pragma warning restore 612, 618
         }
