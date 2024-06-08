@@ -37,6 +37,7 @@ builder.Services.AddScoped<IDbSeeder, DbSeeder>();
 
 // Use case services
 builder.Services.AddScoped<TutorPetsManager>();
+builder.Services.AddScoped<PatientsManager>();
 
 builder.Services.AddControllersWithViews();
 

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using c18_98_m_csharp.Data;
@@ -11,9 +12,11 @@ using c18_98_m_csharp.Data;
 namespace c18_98_m_csharp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240608030349_Patients")]
+    partial class Patients
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -261,21 +264,6 @@ namespace c18_98_m_csharp.Data.Migrations
                     b.ToTable("ClinicalHistoryEntry");
                 });
 
-            modelBuilder.Entity("c18_98_m_csharp.Models.Patients", b =>
-                {
-                    b.Property<Guid>("VetId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("PetId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("VetId", "PetId");
-
-                    b.HasIndex("PetId");
-
-                    b.ToTable("Patients");
-                });
-
             modelBuilder.Entity("c18_98_m_csharp.Models.Pet", b =>
                 {
                     b.Property<Guid>("Id")
@@ -387,25 +375,6 @@ namespace c18_98_m_csharp.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("ClinicalHistory");
-                });
-
-            modelBuilder.Entity("c18_98_m_csharp.Models.Patients", b =>
-                {
-                    b.HasOne("c18_98_m_csharp.Models.Pet", "Pet")
-                        .WithMany()
-                        .HasForeignKey("PetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AppUser", "Vet")
-                        .WithMany()
-                        .HasForeignKey("VetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Pet");
-
-                    b.Navigation("Vet");
                 });
 
             modelBuilder.Entity("c18_98_m_csharp.Models.TutorPet", b =>

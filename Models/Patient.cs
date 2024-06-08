@@ -2,7 +2,7 @@
 
 namespace c18_98_m_csharp.Models;
 
-public class VetPet
+public class Patient
 {
     [ForeignKey("AppUser")]
     public Guid VetId { get; set; }
