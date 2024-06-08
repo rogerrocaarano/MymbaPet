@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using c18_98_m_csharp.Data;
 using c18_98_m_csharp.Models;
+using c18_98_m_csharp.Services;
 using c18_98_m_csharp.Services.Pets;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
@@ -12,7 +13,7 @@ namespace c18_98_m_csharp.Controllers;
 public class PetsController(
     ApplicationDbContext context,
     UserManager<AppUser> userManager,
-    PetManager petManager)
+    TutorPetsManager petsManager)
     : Controller
 {
     // GET: Pets
@@ -25,7 +26,7 @@ public class PetsController(
             return RedirectToPage("Identity/Account/Login");
         }
 
-        var userPets = await petManager.GetPets(user);
+        var userPets = await petsManager.GetAllowedPets(user);
         return View(userPets);
     }
 
@@ -39,18 +40,12 @@ public class PetsController(
             return RedirectToPage("Identity/Account/Login");
         }
 
-        if (id == null || !petManager.UserIsPetTutor(user, id.Value))
+        if (id == null || !petsManager.HasAccess(id.Value, user))
         {
             return NotFound();
         }
 
-        var pet = await context.Pets
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (pet == null)
-        {
-            return NotFound();
-        }
-
+        var pet = await petsManager.Get<Pet>(id.Value);
         return View(pet);
     }
 
@@ -70,14 +65,10 @@ public class PetsController(
         [Bind("Id,Name,Breed,Color,Species,Birthdate,Sex,MicrochipId,Notes")]
         Pet pet)
     {
-        if (ModelState.IsValid)
-        {
-            var user = await userManager.GetUserAsync(User);
-            await petManager.RegisterPet(pet, user);
-            return RedirectToAction(nameof(Index));
-        }
-
-        return View(pet);
+        if (!ModelState.IsValid) return View(pet);
+        var user = await userManager.GetUserAsync(User);
+        await petsManager.RegisterPet(pet, user);
+        return RedirectToAction(nameof(Index));
     }
 
     // POST: Pets/Edit/5
@@ -94,29 +85,26 @@ public class PetsController(
             return NotFound();
         }
 
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid) return View(pet);
+        try
         {
-            try
+            context.Update(pet);
+            await context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!PetExists(pet.Id))
             {
-                context.Update(pet);
-                await context.SaveChangesAsync();
+                return NotFound();
             }
-            catch (DbUpdateConcurrencyException)
+            else
             {
-                if (!PetExists(pet.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
-
-            return RedirectToAction(nameof(Index));
         }
 
-        return View(pet);
+        return RedirectToAction(nameof(Index));
+
     }
 
     // GET: Pets/Delete/5
@@ -129,7 +117,7 @@ public class PetsController(
             return RedirectToPage("Identity/Account/Login");
         }
 
-        if (id == null || !petManager.UserIsPetTutor(user, id.Value))
+        if (id == null || !petsManager.HasAccess(id.Value, user))
         {
             return NotFound();
         }

@@ -11,7 +11,9 @@ public class ClinicalHistoryEntry
 
     public DateTime DateTime
     {
-        get { return _dateTime; }
-        set { _dateTime = DateTime.SpecifyKind(value, DateTimeKind.Utc); }
+        get => _dateTime;
+        set => _dateTime = DateTime.SpecifyKind(value, DateTimeKind.Utc);
     }
+
+    public string? Description { get; set; }
 }

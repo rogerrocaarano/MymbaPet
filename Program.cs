@@ -36,7 +36,7 @@ builder.Services.Configure<DbSeederSettings>(builder.Configuration.GetSection("D
 builder.Services.AddScoped<IDbSeeder, DbSeeder>();
 
 // Use case services
-builder.Services.AddScoped<PetManager>();
+builder.Services.AddScoped<TutorPetsManager>();
 
 builder.Services.AddControllersWithViews();
 
