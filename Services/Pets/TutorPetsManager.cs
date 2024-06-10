@@ -1,6 +1,8 @@
 ﻿using c18_98_m_csharp.Data;
 using c18_98_m_csharp.Models;
 using Microsoft.EntityFrameworkCore;
+using shortid;
+using shortid.Configuration;
 
 namespace c18_98_m_csharp.Services.Pets;
 
@@ -35,7 +37,7 @@ public class TutorPetsManager(ApplicationDbContext context) : PetsManager(contex
         var hasAccessTo = GetAllowedPets(user).Result;
         return hasAccessTo.Any(x => x.Id == petId);
     }
-    
+
     public async Task<List<Pet>> GetAllowedPets(AppUser user)
     {
         return await context.TutorPets
@@ -50,6 +52,19 @@ public class TutorPetsManager(ApplicationDbContext context) : PetsManager(contex
         // TODO: Crear historia clínica
         await AllowAccess(pet, user);
     }
-    
-    
+
+    public async Task<PetAccessCode> GenerateAccessCode(Pet pet)
+    {
+        var accessCode = new PetAccessCode
+        {
+            Id = Guid.NewGuid(),
+            Code = ShortId.Generate(new GenerationOptions(useNumbers: true, useSpecialCharacters: false, length: 8)),
+            Expiration = DateTime.Now.ToUniversalTime().AddDays(1),
+            PetId = pet.Id,
+            Used = false
+        };
+        context.PetAccessCodes.Add(accessCode);
+        await context.SaveChangesAsync();
+        return accessCode;
+    }
 }

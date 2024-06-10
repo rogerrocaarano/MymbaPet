@@ -1,12 +1,24 @@
-<a class="flex flex-row h-12 hover:bg-ui-light-hover p-3 border-b">
-    <img src="~/images/icons/inicio.svg" class="w-auto h-5 me-1" />
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@{
+    var homeController = User.IsInRole("Veterinarian") ? "Patients" : "Pets";
+}
+
+<a
+    asp-controller="@homeController" asp-action="Index"
+    class="flex flex-row h-12 hover:bg-ui-light-hover p-3 border-b">
+    <img src="~/images/icons/inicio.svg" class="w-auto h-5 me-1"/>
     <span class="my-auto">Inicio</span>
 </a>
 <a class="flex flex-row h-12 hover:bg-ui-light-hover p-3 border-b">
-    <img src="~/images/icons/agenda.svg" class="w-auto h-5 me-1" />
+    <img src="~/images/icons/agenda.svg" class="w-auto h-5 me-1"/>
     <span class="my-auto">Agenda</span>
 </a>
-<a class="flex flex-row h-12 hover:bg-ui-light-hover p-3 border-b">
-    <img src="~/images/icons/logout.svg" class="w-auto h-5 me-1" />
+<a
+    asp-area="Identity" asp-page="/Account/Logout"
+    class="flex flex-row h-12 hover:bg-ui-light-hover p-3 border-b">
+    <img src="~/images/icons/logout.svg" class="w-auto h-5 me-1"/>
     <span class="my-auto">Cerrar Sesión</span>
 </a>

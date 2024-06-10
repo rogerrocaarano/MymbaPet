@@ -41,4 +41,23 @@ public class PetsManager(
         context.Pets.Update(pet);
         await context.SaveChangesAsync();
     }
+
+    public PetAccessCode? GetAccessCode(string code)
+    {
+        var accessCode = context.PetAccessCodes.FirstOrDefault(x => x.Code == code);
+        if (accessCode == null || accessCode.Expiration < DateTime.Now)
+        {
+            return null;
+        }
+
+        return accessCode;
+    }
+
+    public async Task<List<AppUser>> GetAuthorizedVets(Pet pet)
+    {
+        return await context.Patients
+            .Where(x => x.PetId == pet.Id)
+            .Select(x => x.Vet)
+            .ToListAsync();
+    }
 }

@@ -44,8 +44,12 @@ public class PetsController(
         {
             return NotFound();
         }
-
+        
+        
         var pet = await petsManager.Get<Pet>(id.Value);
+        var authorizedVets = await petsManager.GetAuthorizedVets(pet);
+        ViewData["AuthorizedVets"] = authorizedVets;
+
         return View(pet);
     }
 
@@ -151,4 +155,25 @@ public class PetsController(
     {
         return context.Pets.Any(e => e.Id == id);
     }
+    
+    // GET: Pets/ShareCode/5
+    public async Task<IActionResult> ShareAccessCode(Guid? id)
+    {
+        var user = await userManager.GetUserAsync(User);
+        if (user == null)
+        {
+            // redirect to Area Identity Account Login
+            return RedirectToPage("Identity/Account/Login");
+        }
+
+        if (id == null || !petsManager.HasAccess(id.Value, user))
+        {
+            return NotFound();
+        }
+
+        var pet = await petsManager.Get<Pet>(id.Value);
+        var accessCode = await petsManager.GenerateAccessCode(pet);
+        return View(accessCode);
+    }
+    
 }

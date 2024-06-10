@@ -15,6 +15,18 @@ public class PatientsManager(ApplicationDbContext context) : PetsManager(context
         });
         await context.SaveChangesAsync();
     }
+    
+    public async Task AllowAccess(PetAccessCode accessCode, AppUser user)
+    {
+        var pet = Get(accessCode);
+        if (pet == null)
+        {
+            throw new ArgumentException("Invalid access code");
+        }
+        await AllowAccess(pet, user);
+        context.PetAccessCodes.Remove(accessCode);
+        await context.SaveChangesAsync();
+    }
 
     public async Task RevokeAccess(Pet pet, AppUser user)
     {
@@ -40,5 +52,13 @@ public class PatientsManager(ApplicationDbContext context) : PetsManager(context
             .Where(x => x.VetId == user.Id)
             .Select(x => x.Pet)
             .ToListAsync();
+    }
+    
+    public Pet? Get(PetAccessCode accessCode)
+    {
+        return context.PetAccessCodes
+            .Where(x => x.Code == accessCode.Code)
+            .Select(x => x.Pet)
+            .FirstOrDefault();
     }
 }

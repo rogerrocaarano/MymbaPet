@@ -29,4 +29,5 @@ public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     public DbSet<AppRole> AppRoles { get; set; }
     public DbSet<TutorPet> TutorPets { get; set; }
     public DbSet<Patient> Patients { get; set; }
+    public DbSet<PetAccessCode> PetAccessCodes { get; set; }
 }
