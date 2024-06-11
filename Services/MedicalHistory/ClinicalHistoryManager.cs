@@ -16,20 +16,6 @@ public class ClinicalHistoryManager(
         return clinicalHistory as T;
     }
 
-    public async Task<ClinicalHistory> Create(Pet pet)
-    {
-        var currentTime = DateTime.Now;
-        var clinicalHistory = new ClinicalHistory
-        {
-            Id = Guid.NewGuid(),
-            CreatedAt = currentTime,
-            LastUpdated = currentTime,
-            PetId = pet.Id,
-            Pet = pet
-        };
-        return await Create(clinicalHistory);
-    }
-
     public async Task Delete<T>(Guid id) where T : class
     {
         var clinicalHistory = await context.ClinicalHistories.FirstOrDefaultAsync(x => x.Id == id);
@@ -69,5 +55,10 @@ public class ClinicalHistoryManager(
     public async Task<List<ClinicalHistoryEntry>> GetAllEntries(ClinicalHistory history)
     {
         return await entries.GetAll<ClinicalHistoryEntry>(history);
+    }
+
+    public async Task<Pet?> GetPatient(ClinicalHistory history)
+    {
+        return await context.Pets.FirstOrDefaultAsync(x => x.ClinicalHistoryId == history.Id);
     }
 }

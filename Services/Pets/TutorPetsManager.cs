@@ -51,8 +51,16 @@ public class TutorPetsManager(
 
     public async Task RegisterPet(Pet pet, AppUser user)
     {
+        var currentTime = DateTime.Now;
+        var history = new ClinicalHistory
+        {
+            Id = Guid.NewGuid(),
+            CreatedAt = currentTime,
+            LastUpdated = currentTime
+        };
+        history = await clinicalHistoryManager.Create(history);
+        pet.ClinicalHistory = history;
         pet = await base.Create(pet);
-        await clinicalHistoryManager.Create(pet);
         await AllowAccess(pet, user);
     }
 

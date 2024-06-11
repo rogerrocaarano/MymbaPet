@@ -1,4 +1,6 @@
-﻿namespace c18_98_m_csharp.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace c18_98_m_csharp.Models;
 
 public class Pet
 {
@@ -8,12 +10,16 @@ public class Pet
     public string? Color { get; set; }
     public string? Species { get; set; }
     private DateTime _birthdate;
+
     public DateTime Birthdate
     {
         get { return _birthdate; }
         set { _birthdate = DateTime.SpecifyKind(value, DateTimeKind.Utc); }
     }
+
     public bool Sex { get; set; }
     public string? MicrochipId { get; set; }
     public string? Notes { get; set; }
+    [ForeignKey("ClinicalHistory")] public Guid ClinicalHistoryId { get; set; }
+    public ClinicalHistory? ClinicalHistory { get; set; }
 }

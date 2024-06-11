@@ -23,7 +23,4 @@ public class ClinicalHistory
     }
 
     private DateTime _lastUpdated { get; set; }
-    
-    [ForeignKey("Pet")] public Guid PetId { get; set; }
-    public Pet Pet { get; set; }
 }
