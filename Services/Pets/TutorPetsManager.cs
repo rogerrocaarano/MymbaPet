@@ -1,12 +1,15 @@
 ﻿using c18_98_m_csharp.Data;
 using c18_98_m_csharp.Models;
+using c18_98_m_csharp.Services.MedicalHistory;
 using Microsoft.EntityFrameworkCore;
 using shortid;
 using shortid.Configuration;
 
 namespace c18_98_m_csharp.Services.Pets;
 
-public class TutorPetsManager(ApplicationDbContext context) : PetsManager(context), IPetsAccess
+public class TutorPetsManager(
+    ApplicationDbContext context,
+    ClinicalHistoryManager clinicalHistoryManager) : PetsManager(context), IPetsAccess
 {
     public async Task AllowAccess(Pet pet, AppUser user)
     {
@@ -49,7 +52,7 @@ public class TutorPetsManager(ApplicationDbContext context) : PetsManager(contex
     public async Task RegisterPet(Pet pet, AppUser user)
     {
         pet = await base.Create(pet);
-        // TODO: Crear historia clínica
+        await clinicalHistoryManager.Create(pet);
         await AllowAccess(pet, user);
     }
 

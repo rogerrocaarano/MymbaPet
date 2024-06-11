@@ -15,7 +15,6 @@ public class ClinicalHistoryEntry
         set => _created = DateTime.SpecifyKind(value, DateTimeKind.Utc);
     }
 
-    public string? Description { get; set; }
     private DateTime _lastUpdated;
 
     public DateTime LastUpdated
@@ -23,4 +22,12 @@ public class ClinicalHistoryEntry
         get => _lastUpdated;
         set => _lastUpdated = DateTime.SpecifyKind(value, DateTimeKind.Utc);
     }
+
+    public string ServiceType { get; set; }
+    public float PetWeight { get; set; }
+    public string ConsultReason { get; set; }
+    public string? Observations { get; set; }
+    public string? Diagnosis { get; set; }
+    public string? Treatment { get; set; }
+    public string Status { get; set; }
 }

@@ -14,6 +14,7 @@ public class ClinicalEntryManager(
         var currentTime = DateTime.Now;
         entry.Created = currentTime;
         entry.LastUpdated = currentTime;
+        entry.Status = "ACTIVE";
         await context.ClinicalHistoryEntries.AddAsync(entry);
         await context.SaveChangesAsync();
         return entry as T;

@@ -5,7 +5,14 @@ namespace c18_98_m_csharp.Models;
 public class ClinicalHistory
 {
     public Guid Id { get; set; }
-    public DateTime CreatedAt { get; }
+
+    public DateTime CreatedAt
+    {
+        get => _createdAt;
+        set => _createdAt = DateTime.SpecifyKind(value, DateTimeKind.Utc);
+    }
+
+    private DateTime _createdAt;
     [ForeignKey("ClinicalHistoryEntry")] public Guid? LastEntryId { get; set; }
     public ClinicalHistoryEntry? LastEntry { get; set; }
 
@@ -16,4 +23,7 @@ public class ClinicalHistory
     }
 
     private DateTime _lastUpdated { get; set; }
+    
+    [ForeignKey("Pet")] public Guid PetId { get; set; }
+    public Pet Pet { get; set; }
 }

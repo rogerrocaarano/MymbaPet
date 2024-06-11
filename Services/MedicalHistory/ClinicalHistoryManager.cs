@@ -11,10 +11,23 @@ public class ClinicalHistoryManager(
     public async Task<T> Create<T>(T entity) where T : class
     {
         var clinicalHistory = entity as ClinicalHistory;
-        clinicalHistory.Id = Guid.NewGuid();
         await context.ClinicalHistories.AddAsync(clinicalHistory);
         await context.SaveChangesAsync();
         return clinicalHistory as T;
+    }
+
+    public async Task<ClinicalHistory> Create(Pet pet)
+    {
+        var currentTime = DateTime.Now;
+        var clinicalHistory = new ClinicalHistory
+        {
+            Id = Guid.NewGuid(),
+            CreatedAt = currentTime,
+            LastUpdated = currentTime,
+            PetId = pet.Id,
+            Pet = pet
+        };
+        return await Create(clinicalHistory);
     }
 
     public async Task Delete<T>(Guid id) where T : class

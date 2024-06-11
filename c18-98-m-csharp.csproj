@@ -118,4 +118,8 @@
       <_ContentIncludedByDefault Remove="wwwroot\dist\js\bootstrap.min.js.map" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Remove="Views\Pets\AddVeterinarian.cshtml" />
+    </ItemGroup>
+
 </Project>
