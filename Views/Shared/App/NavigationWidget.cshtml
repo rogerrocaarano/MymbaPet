@@ -6,19 +6,22 @@
     var homeController = User.IsInRole("Veterinarian") ? "Patients" : "Pets";
 }
 
-<a
-    asp-controller="@homeController" asp-action="Index"
-    class="flex flex-row h-12 hover:bg-ui-light-hover p-3 border-b">
-    <img src="~/images/icons/inicio.svg" class="w-auto h-5 me-1"/>
-    <span class="my-auto">Inicio</span>
-</a>
-<a class="flex flex-row h-12 hover:bg-ui-light-hover p-3 border-b">
-    <img src="~/images/icons/agenda.svg" class="w-auto h-5 me-1"/>
-    <span class="my-auto">Agenda</span>
-</a>
-<a
-    asp-area="Identity" asp-page="/Account/Logout"
-    class="flex flex-row h-12 hover:bg-ui-light-hover p-3 border-b">
-    <img src="~/images/icons/logout.svg" class="w-auto h-5 me-1"/>
-    <span class="my-auto">Cerrar Sesión</span>
-</a>
+<div class="absolute bottom-0 left-0 md:bottom-auto md:left-auto md:block flex flex-row">
+    <a
+        asp-controller="@homeController" asp-action="Index"
+        class="flex flex-row h-12 hover:bg-ui-light-hover p-3 border-b">
+        <img src="~/images/icons/inicio.svg" class="w-auto h-5 me-1"/>
+        <span class="my-auto">Inicio</span>
+    </a>
+    <a
+        class="flex flex-row h-12 hover:bg-ui-light-hover p-3 border-b">
+        <img src="~/images/icons/agenda.svg" class="w-auto h-5 me-1"/>
+        <span class="my-auto">Agenda</span>
+    </a>
+    <a
+        asp-area="Identity" asp-page="/Account/Logout"
+        class="flex flex-row h-12 hover:bg-ui-light-hover p-3 border-b">
+        <img src="~/images/icons/logout.svg" class="w-auto h-5 me-1"/>
+        <span class="my-auto">Cerrar Sesión</span>
+    </a>
+</div>
