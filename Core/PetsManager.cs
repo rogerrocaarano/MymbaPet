@@ -56,9 +56,9 @@ public class PetsManager(
         var authorization = new PetAccessAuthorization
         {
             Id = Guid.NewGuid(),
-            Pet = pet,
-            User = user,
-            Role = role
+            PetId = pet.Id,
+            UserId = user.Id,
+            RoleId = role.Id
         };
         await context.AddAsync(authorization);
         await context.SaveChangesAsync();
@@ -99,13 +99,20 @@ public class PetsManager(
             .FirstOrDefaultAsync();
     }
 
-    public async Task UseAccessCode(PetAccessCode code, AppUser user, AppRole role)
+    public async Task<bool> UseAccessCode(PetAccessCode code, AppUser user, AppRole role)
     {
         if (code.UsedBy == null
             && code.Expiration > DateTime.Now.ToUniversalTime())
         {
-            await AuthorizeAccessToPet(code.Pet, user, role);
+            var pet = await context.Pets.FindAsync(code.PetId);
+            await AuthorizeAccessToPet(pet, user, role);
+            code.UsedBy = user;
+            context.PetAccessCodes.Update(code);
+            await context.SaveChangesAsync();
+            return true;
         }
+
+        return false;
     }
     
     public async Task Update(Pet pet)

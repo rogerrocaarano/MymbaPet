@@ -1,0 +1,14 @@
+﻿@model c18_98_m_csharp.Models.Pets.PetAccessCode
+
+@{
+    ViewData["Title"] = "Agregar mascota por código de acceso";
+}
+
+<p>
+    Introducí el código proporcionado por el tutor de la mascota.
+</p>
+
+<form asp-action="AddBySharedCode">
+    <input type="text" asp-for="Code"/>
+    <input type="submit" value="Agregar"/>
+</form>

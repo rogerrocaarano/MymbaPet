@@ -1,9 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using c18_98_m_csharp.Models.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace c18_98_m_csharp.Models.Pets;
 
+[PrimaryKey(nameof(Id))]
 public class PetAccessAuthorization
 {
     public Guid Id { get; set; }

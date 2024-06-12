@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace c18_98_m_csharp.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -203,12 +203,12 @@ namespace c18_98_m_csharp.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    Breed = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Breed = table.Column<string>(type: "text", nullable: true),
                     Color = table.Column<string>(type: "text", nullable: true),
                     Species = table.Column<string>(type: "text", nullable: true),
                     Birthdate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Sex = table.Column<bool>(type: "boolean", nullable: false),
+                    Sex = table.Column<string>(type: "text", nullable: true),
                     MicrochipId = table.Column<string>(type: "text", nullable: true),
                     Notes = table.Column<string>(type: "text", nullable: true),
                     ClinicalHistoryId = table.Column<Guid>(type: "uuid", nullable: false)
@@ -228,19 +228,19 @@ namespace c18_98_m_csharp.Data.Migrations
                 name: "PetAccessAuthorizations",
                 columns: table => new
                 {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     PetId = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    RoleId = table.Column<Guid>(type: "uuid", nullable: false)
+                    RoleId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PetAccessAuthorizations", x => x.PetId);
+                    table.PrimaryKey("PK_PetAccessAuthorizations", x => x.Id);
                     table.ForeignKey(
                         name: "FK_PetAccessAuthorizations_AspNetRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_PetAccessAuthorizations_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -323,6 +323,11 @@ namespace c18_98_m_csharp.Data.Migrations
                 table: "ClinicalHistoryEntries",
                 column: "ClinicalHistoryId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PetAccessAuthorizations_PetId",
+                table: "PetAccessAuthorizations",
+                column: "PetId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PetAccessAuthorizations_RoleId",

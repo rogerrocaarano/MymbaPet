@@ -12,8 +12,8 @@ using c18_98_m_csharp.Data;
 namespace c18_98_m_csharp.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240612150204_PetAccesAuthorization-FK_Role")]
-    partial class PetAccesAuthorizationFK_Role
+    [Migration("20240612204931_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

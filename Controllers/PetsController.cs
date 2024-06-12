@@ -62,6 +62,7 @@ public class PetsController : Controller
 
         return View(pet);
     }
+
     // POST: Pets/Details/{PetId}
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -76,17 +77,19 @@ public class PetsController : Controller
         {
             return View(pet);
         }
+
         var user = await _userManager.GetUserAsync(User);
         var petToUpdate = _petsManager.GetPet(user, pet.Id);
         if (petToUpdate == null)
         {
             return NotFound();
         }
+
         // Update only the fields that can be modified by the user
         petToUpdate.Name = pet.Name;
         petToUpdate.Birthdate = pet.Birthdate;
         petToUpdate.Notes = pet.Notes;
-        
+
         await _petsManager.Update(petToUpdate);
         return RedirectToAction(nameof(MyPets));
     }
@@ -135,7 +138,7 @@ public class PetsController : Controller
     // VETERINARIAN:
 
     // GET: Pets/MyPatients
-    [Authorize (Roles = "Veterinarian")]
+    [Authorize(Roles = "Veterinarian")]
     public async Task<IActionResult> MyPatients()
     {
         var user = await _userManager.GetUserAsync(User);
@@ -151,5 +154,32 @@ public class PetsController : Controller
     // todo POST: Pets/MyPatients/AddNew
 
     // todo GET: Pets/MyPatients/AddBySharedCode
-    // todo POST: Pets/MyPatients/AddBySharedCode
+    [Authorize(Roles = "Veterinarian")]
+    public async Task<IActionResult> AddBySharedCode()
+    {
+        return View();
+    }
+    
+    // POST: Pets/MyPatients/AddBySharedCode
+    [Authorize (Roles = "Veterinarian")]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AddBySharedCode([Bind("Code")] string code)
+    {
+        var accessCode = await _petsManager.GetAccessCode(code);
+        if (accessCode == null)
+        {
+            return NotFound();
+        }
+
+        var user = await _userManager.GetUserAsync(User);
+        var role = _roleManager.Roles.FirstOrDefault(r => r.Name == "Veterinarian");
+        
+        var result = await _petsManager.UseAccessCode(accessCode, user, role);
+        if (!result)
+        {
+            return RedirectToAction(nameof(AddBySharedCode));
+        }
+        return RedirectToAction(nameof(MyPatients));
+    }
 }

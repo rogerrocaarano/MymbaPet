@@ -18,5 +18,6 @@ public class PetAccessCode
     private DateTime _expiration;
     [ForeignKey("Pet")] public Guid PetId { get; set; }
     public Pet Pet { get; set; }
+    [ForeignKey("UsedBy")] public Guid? UsedById { get; set; }
     public AppUser? UsedBy { get; set; }
 }
