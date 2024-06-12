@@ -1,0 +1,21 @@
+@model c18_98_m_csharp.Models.Pets.Pet
+
+@{
+    ViewData["Title"] = "Añadir mascota";
+}
+
+<div class="flex flex-row place-content-between">
+    <h2 class="text-4xl text-primary font-medium mb-10">@ViewData["Title"]</h2>
+    <a asp-controller="Pets" asp-action="Index">
+        Cancelar
+    </a>
+</div>
+@* TODO: Colocar validaciones en el formulario y mostrar mensajes de error *@
+<form asp-action="AddNew">
+    <input hidden="hidden" asp-for="Id"/>
+    <div>
+        <label asp-for="Name"></label>
+        <input asp-for="Name"/>
+        <span asp-validation-for="Name"></span>
+    </div>
+</form>

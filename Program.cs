@@ -1,25 +1,30 @@
+using c18_98_m_csharp.Core;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using c18_98_m_csharp.Data;
 using c18_98_m_csharp.Models;
+using c18_98_m_csharp.Models.Identity;
 using c18_98_m_csharp.Services.MailKit;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using c18_98_m_csharp.Services.DbSeeder;
-using c18_98_m_csharp.Services.MedicalHistory;
-using c18_98_m_csharp.Services.Pets;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Builder configuration sources
 builder.Configuration
-.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
-.AddEnvironmentVariables("DOTNET_")
-.AddEnvironmentVariables("MYMBAAPP_");
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables("DOTNET_")
+    .AddEnvironmentVariables("MYMBAAPP_");
 
 // Add services to the container.
 // Database
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -29,19 +34,16 @@ builder.Services.AddTransient<IEmailSender, MailService>();
 
 // Identity
 builder.Services.AddDefaultIdentity<AppUser>(
-options => options.SignIn.RequireConfirmedAccount = true)
+        options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<AppRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+    .AddEntityFrameworkStores<AppDbContext>();
 
 // Database seeder
 builder.Services.Configure<DbSeederSettings>(builder.Configuration.GetSection("DbSeederSettings"));
 builder.Services.AddScoped<IDbSeeder, DbSeeder>();
 
-// Use case services
-builder.Services.AddScoped<TutorPetsManager>();
-builder.Services.AddScoped<PatientsManager>();
-builder.Services.AddScoped<ClinicalEntryManager>();
-builder.Services.AddScoped<ClinicalHistoryManager>();
+// Domain services
+builder.Services.AddScoped<PetsManager>();
 
 builder.Services.AddControllersWithViews();
 

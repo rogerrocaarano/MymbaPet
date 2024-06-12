@@ -1,179 +1,55 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using c18_98_m_csharp.Data;
-using c18_98_m_csharp.Models;
-using c18_98_m_csharp.Services;
-using c18_98_m_csharp.Services.Pets;
-using Microsoft.AspNetCore.Identity;
+﻿using System.Threading.Tasks;
+using c18_98_m_csharp.Core;
+using c18_98_m_csharp.Models.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace c18_98_m_csharp.Controllers;
 
 [Authorize]
-public class PetsController(
-    ApplicationDbContext context,
-    UserManager<AppUser> userManager,
-    TutorPetsManager petsManager)
-    : Controller
+public class PetsController : Controller
 {
-    // GET: Pets
-    public async Task<IActionResult> Index()
-    {
-        var user = await userManager.GetUserAsync(User);
-        if (user == null)
-        {
-            // redirect to Area Identity Account Login
-            return RedirectToPage("Identity/Account/Login");
-        }
+    private readonly PetsManager _petsManager;
+    private readonly UserManager<AppUser> _userManager;
 
-        var userPets = await petsManager.GetAllowedPets(user);
-        return View(userPets);
+    public PetsController(PetsManager petsManager, UserManager<AppUser> userManager)
+    {
+        _petsManager = petsManager;
+        _userManager = userManager;
     }
 
-    // GET: Pets/Details/5
-    public async Task<IActionResult> Details(Guid? id)
+    // USER:
+
+    // GET: MyPets
+    public async Task<IActionResult> MyPets()
     {
-        var user = await userManager.GetUserAsync(User);
-        if (user == null)
-        {
-            // redirect to Area Identity Account Login
-            return RedirectToPage("Identity/Account/Login");
-        }
-
-        if (id == null || !petsManager.HasAccess(id.Value, user))
-        {
-            return NotFound();
-        }
-        
-        
-        var pet = await petsManager.Get<Pet>(id.Value);
-        var authorizedVets = await petsManager.GetAuthorizedVets(pet);
-        ViewData["AuthorizedVets"] = authorizedVets;
-
-        return View(pet);
+        var user = await _userManager.GetUserAsync(User);
+        var pets = await _petsManager.GetPets(user, null);
+        return View(pets);
     }
 
+    // GET: MyPets/Details/{PetId}
+    // POST: MyPets/Details/{PetId}
 
-    // GET: Pets/AddPet
-    public IActionResult AddPet()
+    // GET: MyPets/AddNew
+    public async Task<IActionResult> AddNew()
     {
         return View();
     }
+    // POST: MyPets/AddNew
 
-    // POST: Pets/AddPet
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> AddPet(
-        [Bind("Id,Name,Breed,Color,Species,Birthdate,Sex,MicrochipId,Notes")]
-        Pet pet)
-    {
-        if (!ModelState.IsValid) return View(pet);
-        var user = await userManager.GetUserAsync(User);
-        await petsManager.RegisterPet(pet, user);
-        return RedirectToAction(nameof(Index));
-    }
+    // GET: MyPets/ShareCode/{PetId}
 
-    // POST: Pets/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Update(Guid id,
-        [Bind("Id,Name,Breed,Color,Species,Birthdate,Sex,MicrochipId,Notes")]
-        Pet pet)
-    {
-        if (id != pet.Id)
-        {
-            return NotFound();
-        }
 
-        if (!ModelState.IsValid) return View(pet);
-        try
-        {
-            context.Update(pet);
-            await context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!PetExists(pet.Id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
-        }
+    // VETERINARIAN:
 
-        return RedirectToAction(nameof(Index));
+    // GET: MyPatients
 
-    }
+    // GET: MyPatients/Details/{PetId}
 
-    // GET: Pets/Delete/5
-    public async Task<IActionResult> Delete(Guid? id)
-    {
-        var user = await userManager.GetUserAsync(User);
-        if (user == null)
-        {
-            // redirect to Area Identity Account Login
-            return RedirectToPage("Identity/Account/Login");
-        }
+    // GET: MyPatients/AddNew
+    // POST: MyPatients/AddNew
 
-        if (id == null || !petsManager.HasAccess(id.Value, user))
-        {
-            return NotFound();
-        }
-
-        var pet = await context.Pets
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (pet == null)
-        {
-            return NotFound();
-        }
-
-        return View(pet);
-    }
-
-    // POST: Pets/Delete/5
-    [HttpPost, ActionName("Delete")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(Guid id)
-    {
-        var pet = await context.Pets.FindAsync(id);
-        if (pet != null)
-        {
-            context.Pets.Remove(pet);
-        }
-
-        await context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
-    }
-
-    private bool PetExists(Guid id)
-    {
-        return context.Pets.Any(e => e.Id == id);
-    }
-    
-    // GET: Pets/ShareCode/5
-    public async Task<IActionResult> ShareAccessCode(Guid? id)
-    {
-        var user = await userManager.GetUserAsync(User);
-        if (user == null)
-        {
-            // redirect to Area Identity Account Login
-            return RedirectToPage("Identity/Account/Login");
-        }
-
-        if (id == null || !petsManager.HasAccess(id.Value, user))
-        {
-            return NotFound();
-        }
-
-        var pet = await petsManager.Get<Pet>(id.Value);
-        var accessCode = await petsManager.GenerateAccessCode(pet);
-        return View(accessCode);
-    }
-    
+    // GET: MyPatients/AddBySharedCode
 }

@@ -1,25 +1,23 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using c18_98_m_csharp.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace c18_98_m_csharp.Controllers;
 
-public class HomeController : Controller
+public class HomeController(ILogger<HomeController> logger) : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
-    {
-        _logger = logger;
-    }
+    private readonly ILogger<HomeController> _logger = logger;
 
     public IActionResult Index()
     {
-        if (User.Identity.IsAuthenticated)
-        {
-            return RedirectToAction("Index", "Pets");
-        }
         return View();
+    }
+    
+    public IActionResult App()
+    {
+        return Redirect($"Pets/MyPets/");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
