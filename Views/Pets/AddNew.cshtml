@@ -1,18 +1,17 @@
 @model c18_98_m_csharp.Models.Pets.Pet
 
 @{
-    ViewData["Title"] = "Detalles de mascota";
+    ViewData["Title"] = "Añadir mascota";
 }
 
 <div class="flex flex-row place-content-between">
     <h2 class="text-4xl text-primary font-medium mb-10">@ViewData["Title"]</h2>
     <a asp-controller="Pets" asp-action="MyPets">
-        Atrás
+        Cancelar
     </a>
 </div>
 
-<form asp-action="Details">
-    <input asp-for="Id" hidden="hidden"/>
+<form asp-action="AddNew" >
     <div>
         <label asp-for="Name"></label>
         <input asp-for="Name"/>
@@ -39,24 +38,4 @@
         <span asp-validation-for="Notes"></span>
     </div>
     <input type="submit" value="Guardar"/>
-    <p>Esta información solo puede modificar el veterinario</p>
-    <div>
-        <label asp-for="Breed"></label>
-        <input asp-for="Breed"/>
-    </div>
-    <div>
-        <label asp-for="Color"></label>
-        <input asp-for="Color"/>
-    </div>
-    <div>
-        <label asp-for="Sex"></label>
-        <select asp-for="Sex">
-            <option value="Macho">Macho</option>
-            <option value="Hembra">Hembra</option>
-        </select>
-    </div>
-    <div>
-        <label asp-for="MicrochipId"></label>
-        <input asp-for="MicrochipId"/>
-    </div>
 </form>
