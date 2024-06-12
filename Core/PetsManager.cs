@@ -71,6 +71,12 @@ public class PetsManager(
             .Select(x => x.Pet)
             .ToListAsync();
     }
+    
+    public Pet? GetPet(AppUser user, Guid petId)
+    {
+        var userPets = GetPets(user, null).Result;
+        return userPets.Find(pet => pet.Id == petId);
+    }
 
     public async Task<PetAccessCode> GenerateAccessCode(Pet pet)
     {
@@ -100,5 +106,11 @@ public class PetsManager(
         {
             await AuthorizeAccessToPet(code.Pet, user, role);
         }
+    }
+    
+    public async Task Update(Pet pet)
+    {
+        context.Pets.Update(pet);
+        await context.SaveChangesAsync();
     }
 }

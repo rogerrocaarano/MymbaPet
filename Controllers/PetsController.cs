@@ -14,14 +14,28 @@ public class PetsController : Controller
 {
     private readonly PetsManager _petsManager;
     private readonly UserManager<AppUser> _userManager;
+    private readonly RoleManager<AppRole> _roleManager;
 
-    public PetsController(PetsManager petsManager, UserManager<AppUser> userManager)
+    public PetsController(
+        PetsManager petsManager,
+        UserManager<AppUser> userManager,
+        RoleManager<AppRole> roleManager)
     {
         _petsManager = petsManager;
         _userManager = userManager;
+        _roleManager = roleManager;
     }
 
     // USER:
+    public IActionResult Index()
+    {
+        if (User.IsInRole("Veterinarian"))
+        {
+            return RedirectToAction(nameof(MyPatients));
+        }
+
+        return RedirectToAction(nameof(MyPets));
+    }
 
     // GET: Pets/MyPets
     public async Task<IActionResult> MyPets()
@@ -31,8 +45,51 @@ public class PetsController : Controller
         return View(pets);
     }
 
-    // GET: Pets/MyPets/Details/{PetId}
-    // POST: Pets/MyPets/Details/{PetId}
+    // GET: Pets/Details/{PetId}
+    public async Task<IActionResult> Details(Guid? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var user = await _userManager.GetUserAsync(User);
+        var pet = _petsManager.GetPet(user, id.Value);
+        if (pet == null)
+        {
+            return NotFound();
+        }
+
+        return View(pet);
+    }
+    // POST: Pets/Details/{PetId}
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Details(Guid id, [Bind("Id,Name,Birthdate,Notes")] Pet pet)
+    {
+        if (id != pet.Id)
+        {
+            return NotFound();
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return View(pet);
+        }
+        var user = await _userManager.GetUserAsync(User);
+        var petToUpdate = _petsManager.GetPet(user, pet.Id);
+        if (petToUpdate == null)
+        {
+            return NotFound();
+        }
+        // Update only the fields that can be modified by the user
+        petToUpdate.Name = pet.Name;
+        petToUpdate.Birthdate = pet.Birthdate;
+        petToUpdate.Notes = pet.Notes;
+        
+        await _petsManager.Update(petToUpdate);
+        return RedirectToAction(nameof(MyPets));
+    }
 
     // GET: Pets/AddNew
     public async Task<IActionResult> AddNew()
@@ -55,17 +112,44 @@ public class PetsController : Controller
         return RedirectToAction(nameof(MyPets));
     }
 
-    // GET: Pets/MyPets/ShareCode/{PetId}
+    // GET: Pets/ShareCode/{PetId}
+    public async Task<IActionResult> ShareCode(Guid? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var user = await _userManager.GetUserAsync(User);
+        var pet = _petsManager.GetPet(user, id.Value);
+        if (pet == null)
+        {
+            return Unauthorized();
+        }
+
+        var accessCode = await _petsManager.GenerateAccessCode(pet);
+        return View(accessCode);
+    }
 
 
     // VETERINARIAN:
 
     // GET: Pets/MyPatients
+    [Authorize (Roles = "Veterinarian")]
+    public async Task<IActionResult> MyPatients()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        var role = _roleManager.Roles.FirstOrDefault(r => r.Name == "Veterinarian");
+        var pets = await _petsManager.GetPets(user, role);
+        return View(pets);
+    }
 
-    // GET: Pets/MyPatients/Details/{PetId}
+    // todo GET: Pets/MyPatients/Details/{PetId}
+    // todo POST: Pets/MyPatients/Details/{PetId}
 
-    // GET: Pets/MyPatients/AddNew
-    // POST: Pets/MyPatients/AddNew
+    // todo GET: Pets/MyPatients/AddNew
+    // todo POST: Pets/MyPatients/AddNew
 
-    // GET: Pets/MyPatients/AddBySharedCode
+    // todo GET: Pets/MyPatients/AddBySharedCode
+    // todo POST: Pets/MyPatients/AddBySharedCode
 }

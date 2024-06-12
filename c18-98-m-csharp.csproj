@@ -115,6 +115,7 @@
       <_ContentIncludedByDefault Remove="Views\Patients\AddPatientBySharedCode.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Patients\Index.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Patients\_ViewStart.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\Index.cshtml" />
     </ItemGroup>
 
 </Project>

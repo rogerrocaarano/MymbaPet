@@ -1,0 +1,62 @@
+@model c18_98_m_csharp.Models.Pets.Pet
+
+@{
+    ViewData["Title"] = "Detalles de mascota";
+}
+
+<div class="flex flex-row place-content-between">
+    <h2 class="text-4xl text-primary font-medium mb-10">@ViewData["Title"]</h2>
+    <a asp-controller="Pets" asp-action="MyPets">
+        Atrás
+    </a>
+</div>
+
+<form asp-action="Details">
+    <input asp-for="Id" hidden="hidden"/>
+    <div>
+        <label asp-for="Name"></label>
+        <input asp-for="Name"/>
+        <span asp-validation-for="Name"></span>
+    </div>
+    <div>
+        <label asp-for="Species"></label>
+        <select asp-for="Species">
+            <option value="Dog">Perro</option>
+            <option value="Cat">Gato</option>
+            <option value="Bird">Ave</option>
+            <option value="Other">Otro</option>
+        </select>
+        <span asp-validation-for="Species"></span>
+    </div>
+    <div>
+        <label asp-for="Birthdate"></label>
+        <input asp-for="Birthdate" type="date"/>
+        <span asp-validation-for="Birthdate"></span>
+    </div>
+    <div>
+        <label asp-for="Notes"></label>
+        <textarea asp-for="Notes"></textarea>
+        <span asp-validation-for="Notes"></span>
+    </div>
+    <input type="submit" value="Guardar"/>
+    <p>Esta información solo puede modificar el veterinario</p>
+    <div>
+        <label asp-for="Breed"></label>
+        <input asp-for="Breed"/>
+    </div>
+    <div>
+        <label asp-for="Color"></label>
+        <input asp-for="Color"/>
+    </div>
+    <div>
+        <label asp-for="Sex"></label>
+        <select asp-for="Sex">
+            <option value="Macho">Macho</option>
+            <option value="Hembra">Hembra</option>
+        </select>
+    </div>
+    <div>
+        <label asp-for="MicrochipId"></label>
+        <input asp-for="MicrochipId"/>
+    </div>
+</form>
