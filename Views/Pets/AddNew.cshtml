@@ -6,16 +6,36 @@
 
 <div class="flex flex-row place-content-between">
     <h2 class="text-4xl text-primary font-medium mb-10">@ViewData["Title"]</h2>
-    <a asp-controller="Pets" asp-action="Index">
+    <a asp-controller="Pets" asp-action="MyPets">
         Cancelar
     </a>
 </div>
-@* TODO: Colocar validaciones en el formulario y mostrar mensajes de error *@
-<form asp-action="AddNew">
-    <input hidden="hidden" asp-for="Id"/>
+
+<form asp-action="AddNew" >
     <div>
         <label asp-for="Name"></label>
         <input asp-for="Name"/>
         <span asp-validation-for="Name"></span>
     </div>
+    <div>
+        <label asp-for="Species"></label>
+        <select asp-for="Species">
+            <option value="Dog">Perro</option>
+            <option value="Cat">Gato</option>
+            <option value="Bird">Ave</option>
+            <option value="Other">Otro</option>
+        </select>
+        <span asp-validation-for="Species"></span>
+    </div>
+    <div>
+        <label asp-for="Birthdate"></label>
+        <input asp-for="Birthdate" type="date"/>
+        <span asp-validation-for="Birthdate"></span>
+    </div>
+    <div>
+        <label asp-for="Notes"></label>
+        <textarea asp-for="Notes"></textarea>
+        <span asp-validation-for="Notes"></span>
+    </div>
+    <input type="submit" value="Guardar"/>
 </form>

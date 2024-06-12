@@ -7,8 +7,8 @@ namespace c18_98_m_csharp.Models.Pets;
 public class Pet
 {
     public Guid Id { get; set; }
-    public string? Name { get; set; }
-    public string Breed { get; set; } = "Mestizo";
+    public string Name { get; set; }
+    public string? Breed { get; set; }
     public string? Color { get; set; }
     public string? Species { get; set; }
     private DateTime _birthdate;
@@ -19,7 +19,7 @@ public class Pet
         set { _birthdate = DateTime.SpecifyKind(value, DateTimeKind.Utc); }
     }
 
-    public bool Sex { get; set; }
+    public string? Sex { get; set; }
     public string? MicrochipId { get; set; }
     public string? Notes { get; set; }
     [ForeignKey("ClinicalHistory")] public Guid ClinicalHistoryId { get; set; }

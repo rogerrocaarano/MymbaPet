@@ -14,11 +14,6 @@ public class HomeController(ILogger<HomeController> logger) : Controller
     {
         return View();
     }
-    
-    public IActionResult App()
-    {
-        return Redirect($"Pets/MyPets/");
-    }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

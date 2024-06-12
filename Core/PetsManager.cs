@@ -34,7 +34,7 @@ public class PetsManager(
             await AuthorizeAccessToPet(pet, user, vetRole);
         }
 
-        return context.Pets.FirstOrDefault(pet);
+        return await context.Pets.FindAsync(pet.Id);
     }
 
     private async Task<ClinicalHistory> NewClinicalHistory()
@@ -48,13 +48,14 @@ public class PetsManager(
         };
         await context.ClinicalHistories.AddAsync(history);
         await context.SaveChangesAsync();
-        return context.ClinicalHistories.FirstOrDefault(history);
+        return await context.ClinicalHistories.FindAsync(history.Id);
     }
 
     public async Task AuthorizeAccessToPet(Pet pet, AppUser user, AppRole? role)
     {
         var authorization = new PetAccessAuthorization
         {
+            Id = Guid.NewGuid(),
             Pet = pet,
             User = user,
             Role = role

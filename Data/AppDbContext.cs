@@ -18,9 +18,6 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-
-        builder.Entity<PetAccessAuthorization>()
-            .HasKey(x => new { x.PetId });
     }
 
     public DbSet<ClinicalHistory> ClinicalHistories { get; set; }

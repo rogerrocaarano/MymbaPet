@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using c18_98_m_csharp.Data;
@@ -11,9 +12,11 @@ using c18_98_m_csharp.Data;
 namespace c18_98_m_csharp.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240612144308_PetCorrections")]
+    partial class PetCorrections
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -331,22 +334,16 @@ namespace c18_98_m_csharp.Data.Migrations
 
             modelBuilder.Entity("c18_98_m_csharp.Models.Pets.PetAccessAuthorization", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("PetId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("RoleId")
+                    b.Property<Guid>("RoleId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("PetId");
+                    b.HasKey("PetId");
 
                     b.HasIndex("RoleId");
 
@@ -466,7 +463,9 @@ namespace c18_98_m_csharp.Data.Migrations
 
                     b.HasOne("c18_98_m_csharp.Models.Identity.AppRole", "Role")
                         .WithMany()
-                        .HasForeignKey("RoleId");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("c18_98_m_csharp.Models.Identity.AppUser", "User")
                         .WithMany()

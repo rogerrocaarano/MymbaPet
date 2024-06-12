@@ -1,7 +1,9 @@
 ﻿using System.Threading.Tasks;
 using c18_98_m_csharp.Core;
 using c18_98_m_csharp.Models.Identity;
+using c18_98_m_csharp.Models.Pets;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,7 +23,7 @@ public class PetsController : Controller
 
     // USER:
 
-    // GET: MyPets
+    // GET: Pets/MyPets
     public async Task<IActionResult> MyPets()
     {
         var user = await _userManager.GetUserAsync(User);
@@ -29,27 +31,41 @@ public class PetsController : Controller
         return View(pets);
     }
 
-    // GET: MyPets/Details/{PetId}
-    // POST: MyPets/Details/{PetId}
+    // GET: Pets/MyPets/Details/{PetId}
+    // POST: Pets/MyPets/Details/{PetId}
 
-    // GET: MyPets/AddNew
+    // GET: Pets/AddNew
     public async Task<IActionResult> AddNew()
     {
         return View();
     }
-    // POST: MyPets/AddNew
 
-    // GET: MyPets/ShareCode/{PetId}
+    // POST: Pets/AddNew
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AddNew([Bind("Id,Name,Species,Birthdate,Notes")] Pet pet)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(pet);
+        }
+
+        var user = await _userManager.GetUserAsync(User);
+        await _petsManager.Register(pet, user);
+        return RedirectToAction(nameof(MyPets));
+    }
+
+    // GET: Pets/MyPets/ShareCode/{PetId}
 
 
     // VETERINARIAN:
 
-    // GET: MyPatients
+    // GET: Pets/MyPatients
 
-    // GET: MyPatients/Details/{PetId}
+    // GET: Pets/MyPatients/Details/{PetId}
 
-    // GET: MyPatients/AddNew
-    // POST: MyPatients/AddNew
+    // GET: Pets/MyPatients/AddNew
+    // POST: Pets/MyPatients/AddNew
 
-    // GET: MyPatients/AddBySharedCode
+    // GET: Pets/MyPatients/AddBySharedCode
 }
