@@ -2,26 +2,39 @@
 <html class="scroll-smooth font-ui" lang="es">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - Mymba Pet</title>
-    <link rel="stylesheet" href="~/css/tailwindcss.css" />
-    <partial name="_FontsPartial" />
+    <link rel="stylesheet" href="~/css/tailwindcss.css"/>
+    <partial name="_FontsPartial"/>
 </head>
 
-<body class="grid md:grid-cols-[14rem_auto] bg-ui-light-page md:min-h-screen">
-    <nav class="bg-ui-light-section">
-        <div class="py-3 px-5">
-            <partial name="_MymbaLogo" />
+<body class="bg-secondary-300 md:grid md:grid-cols-[14rem_auto] md:min-h-screen">
+<nav class="fixed top-0 left-0 md:relative md:top-auto md:left-auto bg-primary-200 shadow-sm w-full">
+    <div class="py-3 px-5 w-full">
+        <partial name="_MymbaLogo"/>
+    </div>
+
+    <partial name="/Views/Shared/App/NavigationWidget.cshtml"/>
+
+    <div class="hidden md:block md:relative md:bottom-auto md:left-auto w-full">
+        <div class="flex flex-row md:flex-col bg-white md:bg-transparent">
+            <a asp-area="Identity" asp-page="/Account/Logout"
+               class="p-4 text-alert hover:bg-tertiary flex flex-row">
+                <object data="/images/icons/logout.svg" 
+                        type="image/svg+xml"
+                        ></object>
+                <span>Cerrar sesión</span>
+            </a>
         </div>
-        <partial name="/Views/Shared/App/NavigationWidget.cshtml" />
-        
-        
-    </nav>
-    <main class="container mx-auto mt-10 px-5">
-        @RenderBody()
-    </main>
-    @await RenderSectionAsync("Scripts", required: false)
+    </div>
+</nav>
+<main class="container mx-auto mt-20 px-5 mb-20 md:mb-4">
+    <h2 class="text-4xl text-primary-800 font-medium">@ViewData["Title"]</h2>
+    <br/>
+    @RenderBody()
+</main>
+@await RenderSectionAsync("Scripts", required: false)
 </body>
 
 </html>

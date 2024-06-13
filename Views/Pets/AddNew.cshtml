@@ -1,41 +1,49 @@
 @model c18_98_m_csharp.Models.Pets.Pet
 
 @{
-    ViewData["Title"] = "Añadir mascota";
+    ViewData["Title"] = "Agregar mascota";
 }
 
-<div class="flex flex-row place-content-between">
-    <h2 class="text-4xl text-primary font-medium mb-10">@ViewData["Title"]</h2>
-    <a asp-controller="Pets" asp-action="MyPets">
-        Cancelar
-    </a>
-</div>
-
-<form asp-action="AddNew" >
-    <div>
-        <label asp-for="Name"></label>
-        <input asp-for="Name"/>
-        <span asp-validation-for="Name"></span>
+<form asp-action="AddNew" class="bg-secondary-100 p-8 rounded-xl shadow-sm md:grid-cols-2 md:gap-x-3">
+    <div class="flex flex-col md:flex-row">
+        <div class="w-36 h-36 rounded-full bg-tertiary-100 mx-auto md:mx-0"></div>
+        <div class="mt-2 md:my-auto mx-auto md:ms-4">
+            <button class="theme-btn bg-transparent hover:text-secondary-100 text-tertiary hover:bg-tertiary border-2 border-tertiary">Subir foto</button>
+        </div>
+    <br/>
     </div>
-    <div>
-        <label asp-for="Species"></label>
-        <select asp-for="Species">
-            <option value="Dog">Perro</option>
+    <div class="form-group-col col-start-1">
+        <label asp-for="Name">Nombre</label>
+        <input asp-for="Name" class="theme-input-primary"/>
+        <span asp-validation-for="Name" class="text-alert"></span>
+    </div>
+    <div class="form-group-col">
+        <label asp-for="Birthdate">Cumpleaños</label>
+        <input asp-for="Birthdate" type="date" class="theme-input-primary"/>
+        <span asp-validation-for="Birthdate" class="text-alert"></span>
+    </div>
+    <div class="form-group-col col-span-2">
+        <label asp-for="Species">Especie</label>
+        <select asp-for="Species" class="theme-input-primary">
+            <option value="Dog" class="theme-input-primary">Perro</option>
             <option value="Cat">Gato</option>
             <option value="Bird">Ave</option>
             <option value="Other">Otro</option>
         </select>
-        <span asp-validation-for="Species"></span>
     </div>
-    <div>
-        <label asp-for="Birthdate"></label>
-        <input asp-for="Birthdate" type="date"/>
-        <span asp-validation-for="Birthdate"></span>
+    <div class="form-group-col col-span-2">
+        <label asp-for="Notes">Notas</label>
+        <textarea asp-for="Notes" class="theme-input-primary"></textarea>
     </div>
-    <div>
-        <label asp-for="Notes"></label>
-        <textarea asp-for="Notes"></textarea>
-        <span asp-validation-for="Notes"></span>
+    <br/>
+    <div class="col-span-2 flex flex-row place-content-end gap-2">
+        <a asp-controller="Pets" asp-action="MyPets" class="inline-block theme-btn text-tertiary">
+            Cancelar
+        </a>
+        <button type="submit"
+                class="theme-btn bg-primary text-secondary-100 hover:bg-primary-500 shadow-sm inline-block">
+            Guardar
+        </button>
+
     </div>
-    <input type="submit" value="Guardar"/>
 </form>

@@ -1,13 +1,21 @@
 ﻿@model c18_98_m_csharp.Models.Pets.PetAccessCode
 
 @{
-    ViewData["Title"] = "Compartir código de acceso";
+    ViewData["Title"] = "Código de acceso";
 }
 
-<p>
-    Comparte este código de acceso con tu veterinario
-</p>
-
-<div>
+<div class="text-5xl font-medium bg-primary-100 border-2 border-primary rounded-2xl p-16 text-center text-primary-800">
     @Model.Code
 </div>
+<br/>
+<p class="text-center text-2xl text-primary-800">
+    Este código expirará en 24hs. <br> No olvides compartirlo con tu veterinario.
+</p>
+<br/>
+<a
+    asp-controller="Pets"
+    asp-action="Details"
+    asp-route-id="@Model.PetId"
+    class="theme-btn flex place-content-center md:inline-block bg-primary hover:bg-primary-500 text-secondary-100 text-base">
+    Volver
+</a>

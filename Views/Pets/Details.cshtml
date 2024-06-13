@@ -3,24 +3,16 @@
 @{
     ViewData["Title"] = "Detalles de mascota";
 }
-
-<div class="flex flex-row place-content-between">
-    <h2 class="text-4xl text-primary font-medium mb-10">@ViewData["Title"]</h2>
-    <a asp-controller="Pets" asp-action="MyPets">
-        Atrás
-    </a>
-</div>
-
-<form asp-action="Details">
+<form asp-action="Details" class="bg-secondary-100 rounded-lg shadow-sm p-4">
     <input asp-for="Id" hidden="hidden"/>
-    <div>
-        <label asp-for="Name"></label>
-        <input asp-for="Name"/>
+    <div class="form-group-col">
+        <label asp-for="Name">Nombre</label>
+        <input asp-for="Name" class="theme-input-primary"/>
         <span asp-validation-for="Name"></span>
     </div>
-    <div>
-        <label asp-for="Species"></label>
-        <select asp-for="Species">
+    <div class="form-group-col">
+        <label asp-for="Species">Especie</label>
+        <select asp-for="Species" class="theme-input-primary">
             <option value="Dog">Perro</option>
             <option value="Cat">Gato</option>
             <option value="Bird">Ave</option>
@@ -28,35 +20,40 @@
         </select>
         <span asp-validation-for="Species"></span>
     </div>
-    <div>
-        <label asp-for="Birthdate"></label>
-        <input asp-for="Birthdate" type="date"/>
+    <div class="form-group-col">
+        <label asp-for="Birthdate">Cumpleaños</label>
+        <input asp-for="Birthdate" type="date" class="theme-input-primary"/>
         <span asp-validation-for="Birthdate"></span>
     </div>
-    <div>
-        <label asp-for="Notes"></label>
-        <textarea asp-for="Notes"></textarea>
+    <div class="form-group-col">
+        <label asp-for="Notes">Notas</label>
+        <textarea asp-for="Notes" class="theme-input-primary"></textarea>
         <span asp-validation-for="Notes"></span>
     </div>
-    <input type="submit" value="Guardar"/>
+    
     <p>Esta información solo puede modificar el veterinario</p>
-    <div>
-        <label asp-for="Breed"></label>
-        <input asp-for="Breed"/>
+    <div class="form-group-col">
+        <label asp-for="Breed">Raza</label>
+        <input asp-for="Breed" class="theme-input-primary"/>
     </div>
-    <div>
-        <label asp-for="Color"></label>
-        <input asp-for="Color"/>
+    <div class="form-group-col">
+        <label asp-for="Color">Color</label>
+        <input asp-for="Color" class="theme-input-primary"/>
     </div>
-    <div>
-        <label asp-for="Sex"></label>
-        <select asp-for="Sex">
+    <div class="form-group-col">
+        <label asp-for="Sex">Género</label>
+        <select asp-for="Sex" class="theme-input-primary">
             <option value="Macho">Macho</option>
             <option value="Hembra">Hembra</option>
         </select>
     </div>
-    <div>
-        <label asp-for="MicrochipId"></label>
-        <input asp-for="MicrochipId"/>
+    <div class="form-group-col">
+        <label asp-for="MicrochipId">ID del Microship</label>
+        <input asp-for="MicrochipId" class="theme-input-primary"/>
     </div>
+    <a asp-action="Index" class="theme-btn hover:bg-secondary-500 text-tertiary">Volver</a>
+    <button type="submit" class="theme-btn bg-primary hover:bg-primary-500 text-secondary-100">Guardar</button>
+    <a asp-action="ShareCode" asp-route-id="@Model.Id" class="theme-btn">Dar acceso a un veterinario</a>
+    
+
 </form>
