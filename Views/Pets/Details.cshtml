@@ -54,6 +54,7 @@
     <a asp-action="Index" class="theme-btn hover:bg-secondary-500 text-tertiary">Volver</a>
     <button type="submit" class="theme-btn bg-primary hover:bg-primary-500 text-secondary-100">Guardar</button>
     <a asp-action="ShareCode" asp-route-id="@Model.Id" class="theme-btn">Dar acceso a un veterinario</a>
-    
 
 </form>
+
+<a asp-controller="ClinicalHistories" asp-action="Details" asp-route-id="@Model.ClinicalHistoryId">Historia Clínica</a>
