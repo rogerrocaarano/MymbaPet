@@ -1,0 +1,43 @@
+﻿@using c18_98_m_csharp.Models.ClinicalHistories
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model c18_98_m_csharp.Models.ClinicalHistories.ClinicalHistoryEntry
+
+@{
+    ViewData["Title"] = "Agregar entrada";
+    var history = ViewData["History"] as ClinicalHistory;
+}
+
+<form asp-action="AddEntry" class="bg-secondary-100 p-8 rounded-xl shadow-sm md:grid-cols-2 md:gap-x-3">
+    <div class="form-group-col">
+        <label>Tipo de servicio</label>
+        <select asp-for="ServiceType" class="theme-input-primary">
+            <option value="Consulta">Consulta</option>
+            <option value="Vacunación">Vacunación</option>
+            <option value="Cirugía">Cirugía</option>
+            <option value="Hospitalización">Hospitalización</option>
+            <option value="Otro">Otro</option>
+        </select>
+    </div>
+    <div class="form-group-col">
+        <label>Peso:</label>
+        <input asp-for="PetWeight" type="number" class="theme-input-primary"/>
+        <span asp-validation-for="PetWeight" class="text-alert"></span>
+    </div>
+    <div class="form-group-col">
+        <label>Motivo de consulta:</label>
+        <textarea asp-for="ConsultReason" class="theme-input-primary"></textarea>
+    </div>
+    <div class="form-group-col">
+        <label>Observaciones:</label>
+        <textarea asp-for="Observations" class="theme-input-primary"></textarea>
+    </div>
+    <div class="form-group-col">
+        <label>Diagnostico:</label>
+        <textarea asp-for="Diagnosis" class="theme-input-primary"></textarea>
+    </div>
+    <div class="form-group-col">
+        <label>Tratamiento:</label>
+        <textarea asp-for="Treatment" class="theme-input-primary"></textarea>
+    </div>
+    <button class="theme-btn">Guardar</button>
+</form>

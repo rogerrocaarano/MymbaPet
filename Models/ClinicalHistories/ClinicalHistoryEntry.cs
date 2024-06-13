@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using c18_98_m_csharp.Models.Identity;
 
 namespace c18_98_m_csharp.Models.ClinicalHistories;
 
@@ -30,5 +31,7 @@ public class ClinicalHistoryEntry
     public string? Observations { get; set; }
     public string? Diagnosis { get; set; }
     public string? Treatment { get; set; }
-    public string Status { get; set; }
+    public string Status { get; set; } = "Pending";
+    [ForeignKey("Vet")] public Guid VetId { get; set; }
+    public AppUser Vet { get; set; }
 }

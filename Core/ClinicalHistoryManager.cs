@@ -43,4 +43,17 @@ public class ClinicalHistoryManager(
             .Where(x => x.ClinicalHistoryId == history.Id)
             .ToListAsync();
     }
+
+    public async Task<ClinicalHistoryEntry?> AddEntry(ClinicalHistory history, ClinicalHistoryEntry entry, AppUser user)
+    {
+        var currentTime = DateTime.Now.ToUniversalTime();
+        entry.Id = Guid.NewGuid();
+        entry.Created = currentTime;
+        entry.LastUpdated = currentTime;
+        entry.ClinicalHistoryId = history.Id;
+        entry.VetId = user.Id;
+        await context.ClinicalHistoryEntries.AddAsync(entry);
+        await context.SaveChangesAsync();
+        return await context.ClinicalHistoryEntries.FindAsync(entry.Id);
+    }
 }
