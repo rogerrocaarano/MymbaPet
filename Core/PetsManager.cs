@@ -15,19 +15,24 @@ namespace c18_98_m_csharp.Core;
 
 public class PetsManager(
     UserManager<AppUser> userManager,
-    RoleManager<AppRole> roleManager,
+    ClinicalHistoryManager clinicalHistoryManager,
     AppDbContext context)
 {
     public async Task<Pet> Register(Pet pet, AppUser user)
     {
         // Create new Clinical History
-        var history = await NewClinicalHistory();
+        var history = await clinicalHistoryManager.NewClinicalHistory();
         pet.ClinicalHistory = history;
+        
         // Add new pet to the database
         await context.Pets.AddAsync(pet);
         await context.SaveChangesAsync();
+        
         // Register pet to the user
-        await AuthorizeAccessToPet(pet, user, null);
+        var tutorRole = await context.Roles.Where(role => role.Name == "PetTutor").FirstOrDefaultAsync();
+        await AuthorizeAccessToPet(pet, user, tutorRole);
+        
+        // If the user is a veterinarian, authorize access to the pet
         var vetRole = await context.Roles.Where(role => role.Name == "Veterinarian").FirstOrDefaultAsync();
         if (await userManager.IsInRoleAsync(user, vetRole.Name))
         {
@@ -37,21 +42,7 @@ public class PetsManager(
         return await context.Pets.FindAsync(pet.Id);
     }
 
-    private async Task<ClinicalHistory> NewClinicalHistory()
-    {
-        var currentTime = DateTime.Now.ToUniversalTime();
-        var history = new ClinicalHistory
-        {
-            Id = Guid.NewGuid(),
-            CreatedAt = currentTime,
-            LastUpdated = currentTime
-        };
-        await context.ClinicalHistories.AddAsync(history);
-        await context.SaveChangesAsync();
-        return await context.ClinicalHistories.FindAsync(history.Id);
-    }
-
-    public async Task AuthorizeAccessToPet(Pet pet, AppUser user, AppRole? role)
+    public async Task AuthorizeAccessToPet(Pet pet, AppUser user, AppRole role)
     {
         var authorization = new PetAccessAuthorization
         {
@@ -64,7 +55,7 @@ public class PetsManager(
         await context.SaveChangesAsync();
     }
 
-    public async Task<List<Pet>> GetPets(AppUser user, AppRole? role)
+    public async Task<List<Pet>> GetPets(AppUser user, AppRole role)
     {
         return await context.PetAccessAuthorizations
             .Where(x => x.User == user && x.Role == role)
@@ -72,11 +63,12 @@ public class PetsManager(
             .ToListAsync();
     }
     
-    public Pet? GetPet(AppUser user, Guid petId)
-    {
-        var userPets = GetPets(user, null).Result;
-        return userPets.Find(pet => pet.Id == petId);
-    }
+    // public Pet? GetPet(AppUser user, Guid petId)
+    // {
+    //     var role = context.Roles.FirstOrDefault(role => role.Name == "PetTutor");
+    //     var userPets = GetPets(user, role).Result;
+    //     return userPets.Find(pet => pet.Id == petId);
+    // }
 
     public async Task<PetAccessCode> GenerateAccessCode(Pet pet)
     {

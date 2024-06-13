@@ -41,7 +41,8 @@ public class PetsController : Controller
     public async Task<IActionResult> MyPets()
     {
         var user = await _userManager.GetUserAsync(User);
-        var pets = await _petsManager.GetPets(user, null);
+        var role = _roleManager.Roles.FirstOrDefault(r => r.Name == "PetTutor");
+        var pets = await _petsManager.GetPets(user, role);
         return View(pets);
     }
 
@@ -54,7 +55,10 @@ public class PetsController : Controller
         }
 
         var user = await _userManager.GetUserAsync(User);
-        var pet = _petsManager.GetPet(user, id.Value);
+        var role = _roleManager.Roles.FirstOrDefault(r => r.Name == "PetTutor");
+        var userPets = await _petsManager.GetPets(user, role);
+        var pet = userPets.Find(x => x.Id == id.Value);
+        // var pet = _petsManager.GetPet(user, id.Value);
         if (pet == null)
         {
             return NotFound();
@@ -79,7 +83,9 @@ public class PetsController : Controller
         }
 
         var user = await _userManager.GetUserAsync(User);
-        var petToUpdate = _petsManager.GetPet(user, pet.Id);
+        var role = _roleManager.Roles.FirstOrDefault(r => r.Name == "PetTutor");
+        var userPets = await _petsManager.GetPets(user, role);
+        var petToUpdate = userPets.Find(x => x.Id == id);
         if (petToUpdate == null)
         {
             return NotFound();
@@ -124,7 +130,9 @@ public class PetsController : Controller
         }
 
         var user = await _userManager.GetUserAsync(User);
-        var pet = _petsManager.GetPet(user, id.Value);
+        var role = _roleManager.Roles.FirstOrDefault(r => r.Name == "PetTutor");
+        var userPets = await _petsManager.GetPets(user, role);
+        var pet = userPets.Find(x => x.Id == id.Value);
         if (pet == null)
         {
             return Unauthorized();
@@ -159,9 +167,9 @@ public class PetsController : Controller
     {
         return View();
     }
-    
+
     // POST: Pets/MyPatients/AddBySharedCode
-    [Authorize (Roles = "Veterinarian")]
+    [Authorize(Roles = "Veterinarian")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddBySharedCode([Bind("Code")] string code)
@@ -174,12 +182,13 @@ public class PetsController : Controller
 
         var user = await _userManager.GetUserAsync(User);
         var role = _roleManager.Roles.FirstOrDefault(r => r.Name == "Veterinarian");
-        
+
         var result = await _petsManager.UseAccessCode(accessCode, user, role);
         if (!result)
         {
             return RedirectToAction(nameof(AddBySharedCode));
         }
+
         return RedirectToAction(nameof(MyPatients));
     }
 }

@@ -44,6 +44,7 @@ builder.Services.AddScoped<IDbSeeder, DbSeeder>();
 
 // Domain services
 builder.Services.AddScoped<PetsManager>();
+builder.Services.AddScoped<ClinicalHistoryManager>();
 
 builder.Services.AddControllersWithViews();
 
