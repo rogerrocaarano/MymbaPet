@@ -46,8 +46,8 @@ public class PetsController : Controller
         return View(pets);
     }
 
-    // GET: Pets/Details/{PetId}
-    public async Task<IActionResult> Details(Guid? id)
+    // GET: Pets/PetDetails/{PetId}
+    public async Task<IActionResult> PetDetails(Guid? id)
     {
         if (id == null)
         {
@@ -67,7 +67,7 @@ public class PetsController : Controller
         return View(pet);
     }
 
-    // POST: Pets/Details/{PetId}
+    // POST: Pets/PetDetails/{PetId}
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Details(Guid id, [Bind("Id,Name,Birthdate,Notes")] Pet pet)
@@ -121,8 +121,8 @@ public class PetsController : Controller
         return RedirectToAction(nameof(MyPets));
     }
 
-    // GET: Pets/ShareCode/{PetId}
-    public async Task<IActionResult> ShareCode(Guid? id)
+    // GET: Pets/ShareWithVet/{PetId}
+    public async Task<IActionResult> ShareWithVet(Guid? id)
     {
         if (id == null)
         {
@@ -161,18 +161,18 @@ public class PetsController : Controller
     // todo GET: Pets/MyPatients/AddNew
     // todo POST: Pets/MyPatients/AddNew
 
-    // todo GET: Pets/MyPatients/AddBySharedCode
+    // GET: Pets/AddPatientByCode
     [Authorize(Roles = "Veterinarian")]
-    public async Task<IActionResult> AddBySharedCode()
+    public async Task<IActionResult> AddPatientByCode()
     {
         return View();
     }
 
-    // POST: Pets/MyPatients/AddBySharedCode
+    // POST: Pets/AddPatientByCode
     [Authorize(Roles = "Veterinarian")]
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> AddBySharedCode([Bind("Code")] string code)
+    public async Task<IActionResult> AddPatientByCode([Bind("Code")] string code)
     {
         var accessCode = await _petsManager.GetAccessCode(code);
         if (accessCode == null)
@@ -186,7 +186,7 @@ public class PetsController : Controller
         var result = await _petsManager.UseAccessCode(accessCode, user, role);
         if (!result)
         {
-            return RedirectToAction(nameof(AddBySharedCode));
+            return RedirectToAction(nameof(AddPatientByCode));
         }
 
         return RedirectToAction(nameof(MyPatients));

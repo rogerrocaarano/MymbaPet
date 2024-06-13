@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Detalles de mascota";
 }
-<form asp-action="Details" class="bg-secondary-100 rounded-lg shadow-sm p-4">
+<form asp-action="PetDetails" class="bg-secondary-100 rounded-lg shadow-sm p-4">
     <input asp-for="Id" hidden="hidden"/>
     <div class="form-group-col">
         <label asp-for="Name">Nombre</label>
@@ -53,7 +53,7 @@
     </div>
     <a asp-action="Index" class="theme-btn hover:bg-secondary-500 text-tertiary">Volver</a>
     <button type="submit" class="theme-btn bg-primary hover:bg-primary-500 text-secondary-100">Guardar</button>
-    <a asp-action="ShareCode" asp-route-id="@Model.Id" class="theme-btn">Dar acceso a un veterinario</a>
+    <a asp-action="ShareWithVet" asp-route-id="@Model.Id" class="theme-btn">Dar acceso a un veterinario</a>
 
 </form>
 
