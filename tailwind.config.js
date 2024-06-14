@@ -23,11 +23,11 @@ module.exports = {
                     500: "#7C58D3",
                     800: "#221956"
                 },
-                tertiary:{
+                tertiary: {
                     100: "#F2F4F8",
                     DEFAULT: "#227C9D"
                 },
-                secondary:{
+                secondary: {
                     100: "#FFFFFF",
                     200: "#FEF7FF",
                     300: "#F6F6FE",
@@ -38,8 +38,11 @@ module.exports = {
                 },
                 alert: {
                     DEFAULT: "#E34D56",
-                }
-
+                },
+                dark: {
+                    300: "#7A798E",
+                    DEFAULT: "#21272A",
+                },
             },
         },
     },

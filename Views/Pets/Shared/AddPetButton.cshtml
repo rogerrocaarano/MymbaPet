@@ -1,8 +1,24 @@
-@* <a asp-action="AddNew" *@
-@*    class="flex flex-row gap-8 bg-ui-light-section p-4 bg-tertiary-100 rounded-md border border-primary-400"> *@
-@*     <div class="w-24 h-24 rounded-full border border-primary-400"></div> *@
-@*     <div class="flex flex-col justify-center text-primary-400"> *@
-@*         <div class="text-xl font-medium">Añadir mascota</div> *@
-@*     </div> *@
-@* </a> *@
-<a asp-action="AddNew" class="theme-btn bg-primary hover:bg-primary-500 text-secondary-100 shadow-sm text-lg flex place-content-center md:inline-block">Añadir mascota</a>
+@if (User.IsInRole("Veterinarian"))
+{
+    <div
+        class="flex flex-col md:flex-row">
+        <a
+            asp-action="AddPatientByCode"
+            class="twbtn solid-primary flex-grow md:flex-grow-0">
+            Añadir paciente
+        </a>
+    </div>
+}
+else
+{
+    <div
+        class="flex flex-col md:flex-row">
+        <a
+            asp-action="AddNew"
+            class="twbtn solid-primary flex-grow md:flex-grow-0">
+            Añadir mascota
+        </a>
+    </div>
+}
+
+

@@ -3,23 +3,33 @@
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
 
-@{
-}
-
 <div class="fixed md:relative bottom-0 left-0 md:bottom-auto md:left-auto w-full">
-    <div class="flex flex-row md:flex-col bg-white md:bg-transparent">
-        <a asp-controller="Pets" asp-action="MyPets"
-           class="p-4 flex flex-row">
-            <object data="/images/icons/home.svg" type="image/svg+xml"></object>
-            <span>Inicio</span>
+    <div class="flex flex-row place-content-between md:ps-5 md:flex-col bg-secondary-100 md:bg-transparent">
+        <a
+            asp-controller="Pets"
+            asp-action="Index"
+            class="twbtn nav group">
+            <div
+                class="flex flex-row gap-1">
+                <partial name="App/icons/home"/>
+                <div>Inicio</div>
+            </div>
         </a>
-        <a asp-controller="Pets" asp-action="MyPets"
-           class="p-4">
-            <span>Inicio</span>
+        <a
+            class="twbtn nav group">
+            <div
+                class="flex flex-row gap-1">
+                <partial name="App/icons/emergency"/>
+                <div>Emergencias</div>
+            </div>
         </a>
-        <a asp-controller="Pets" asp-action="MyPets"
-           class="p-4">
-            <span>Inicio</span>
+        <a
+            class="twbtn nav group">
+            <div
+                class="flex flex-row gap-1">
+                <partial name="App/icons/calendar"/>
+                <div>Agenda</div>
+            </div>
         </a>
     </div>
 </div>

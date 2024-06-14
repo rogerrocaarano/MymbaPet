@@ -10,24 +10,13 @@
 </head>
 
 <body class="bg-secondary-300 md:grid md:grid-cols-[14rem_auto] md:min-h-screen">
-<nav class="fixed top-0 left-0 md:relative md:top-auto md:left-auto bg-primary-200 shadow-sm w-full">
+<nav class="fixed top-0 left-0 md:relative md:top-auto md:left-auto bg-primary-200 shadow-sm w-full md:flex md:flex-col md:gap-y-24">
     <div class="py-3 px-5 w-full">
         <partial name="_MymbaLogo"/>
     </div>
 
     <partial name="/Views/Shared/App/NavigationWidget.cshtml"/>
-
-    <div class="hidden md:block md:relative md:bottom-auto md:left-auto w-full">
-        <div class="flex flex-row md:flex-col bg-white md:bg-transparent">
-            <a asp-area="Identity" asp-page="/Account/Logout"
-               class="p-4 text-alert hover:bg-tertiary flex flex-row">
-                <object data="/images/icons/logout.svg" 
-                        type="image/svg+xml"
-                        ></object>
-                <span>Cerrar sesión</span>
-            </a>
-        </div>
-    </div>
+    <partial name="/Views/Shared/App/NavBottonWidget.cshtml"/>
 </nav>
 <main class="container mx-auto mt-20 px-5 mb-20 md:mb-4">
     <h2 class="text-4xl text-primary-800 font-medium">@ViewData["Title"]</h2>
