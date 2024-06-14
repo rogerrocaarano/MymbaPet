@@ -1,12 +1,35 @@
-<a class="flex flex-row h-12 hover:bg-ui-light-hover p-3 border-b">
-    <img src="~/images/icons/inicio.svg" class="w-auto h-5 me-1" />
-    <span class="my-auto">Inicio</span>
-</a>
-<a class="flex flex-row h-12 hover:bg-ui-light-hover p-3 border-b">
-    <img src="~/images/icons/agenda.svg" class="w-auto h-5 me-1" />
-    <span class="my-auto">Agenda</span>
-</a>
-<a class="flex flex-row h-12 hover:bg-ui-light-hover p-3 border-b">
-    <img src="~/images/icons/logout.svg" class="w-auto h-5 me-1" />
-    <span class="my-auto">Cerrar Sesión</span>
-</a>
+@using c18_98_m_csharp.Models.Identity
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+<div class="fixed md:relative bottom-0 left-0 md:bottom-auto md:left-auto w-full">
+    <div class="flex flex-row place-content-between md:ps-5 md:flex-col bg-secondary-100 md:bg-transparent">
+        <a
+            asp-controller="Pets"
+            asp-action="Index"
+            class="twbtn nav group">
+            <div
+                class="flex flex-row gap-1">
+                <partial name="App/icons/home"/>
+                <div>Inicio</div>
+            </div>
+        </a>
+        <a
+            class="twbtn nav group">
+            <div
+                class="flex flex-row gap-1">
+                <partial name="App/icons/emergency"/>
+                <div>Emergencias</div>
+            </div>
+        </a>
+        <a
+            class="twbtn nav group">
+            <div
+                class="flex flex-row gap-1">
+                <partial name="App/icons/calendar"/>
+                <div>Agenda</div>
+            </div>
+        </a>
+    </div>
+</div>

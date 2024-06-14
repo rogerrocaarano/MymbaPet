@@ -1,209 +1,227 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using c18_98_m_csharp.Data;
-using c18_98_m_csharp.Models;
-using System.Formats.Asn1;
-using System.ComponentModel;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
-using Microsoft.AspNetCore.Identity;
+﻿using System.Threading.Tasks;
+using c18_98_m_csharp.Core;
+using c18_98_m_csharp.Models.Identity;
+using c18_98_m_csharp.Models.Pets;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
-namespace c18_98_m_csharp.Controllers
+namespace c18_98_m_csharp.Controllers;
+
+[Authorize]
+public class PetsController : Controller
 {
-    [Authorize]
-    public class PetsController : Controller
+    private readonly PetsManager _petsManager;
+    private readonly UserManager<AppUser> _userManager;
+    private readonly RoleManager<AppRole> _roleManager;
+
+    public PetsController(
+        PetsManager petsManager,
+        UserManager<AppUser> userManager,
+        RoleManager<AppRole> roleManager)
     {
-        private readonly ApplicationDbContext _context;
-        private readonly UserManager<AppUser> _userManager;
+        _petsManager = petsManager;
+        _userManager = userManager;
+        _roleManager = roleManager;
+    }
 
-        public PetsController(ApplicationDbContext context, UserManager<AppUser> userManager)
+    // USER:
+    public IActionResult Index()
+    {
+        if (User.IsInRole("Veterinarian"))
         {
-            _context = context;
-            _userManager = userManager;
+            return RedirectToAction(nameof(MyPatients));
         }
 
-        // GET: Pets
-        public async Task<IActionResult> Index()
+        return RedirectToAction(nameof(MyPets));
+    }
+
+    public IActionResult Details(Guid? id)
+    {
+        if (id == null)
         {
-            var userPets = await GetUserPets();
-            return View(userPets);
+            return NotFound();
+        }
+        if (User.IsInRole("Veterinarian"))
+        {
+            return RedirectToAction(nameof(PatientDetails), new { id });
+        }
+        return RedirectToAction(nameof(PetDetails), new { id });
+    }
+
+    // GET: Pets/MyPets
+    public async Task<IActionResult> MyPets()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        var role = _roleManager.Roles.FirstOrDefault(r => r.Name == "PetTutor");
+        var pets = await _petsManager.GetPets(user, role);
+        return View(pets);
+    }
+
+    // GET: Pets/PetDetails/{PetId}
+    public async Task<IActionResult> PetDetails(Guid? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
         }
 
-        // GET: Pets/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        var user = await _userManager.GetUserAsync(User);
+        var role = _roleManager.Roles.FirstOrDefault(r => r.Name == "PetTutor");
+        var userPets = await _petsManager.GetPets(user, role);
+        var pet = userPets.Find(x => x.Id == id.Value);
+        // var pet = _petsManager.GetPet(user, id.Value);
+        if (pet == null)
         {
-            if (id == null || !UserIsPetTutor(id.Value))
-            {
-                return NotFound();
-            }
+            return NotFound();
+        }
+        
+        return View(pet);
+    }
 
-            var pet = await _context.Pets
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (pet == null)
-            {
-                return NotFound();
-            }
+    // POST: Pets/PetDetails/{PetId}
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Details(Guid id, [Bind("Id,Name,Birthdate,Notes")] Pet pet)
+    {
+        if (id != pet.Id)
+        {
+            return NotFound();
+        }
 
+        if (!ModelState.IsValid)
+        {
             return View(pet);
         }
 
-        // GET: Pets/Create
-        public IActionResult Create()
+        var user = await _userManager.GetUserAsync(User);
+        var role = _roleManager.Roles.FirstOrDefault(r => r.Name == "PetTutor");
+        var userPets = await _petsManager.GetPets(user, role);
+        var petToUpdate = userPets.Find(x => x.Id == id);
+        if (petToUpdate == null)
         {
-            return View();
+            return NotFound();
         }
 
-        // POST: Pets/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Breed,Color,Species,Birthdate,Sex,MicrochipId,Description")] Pet pet)
-        {
-            if (ModelState.IsValid)
-            {
-                pet.Id = Guid.NewGuid();
-                _context.Add(pet);
-                await _context.SaveChangesAsync();
-                // register pet tutor
-                var user = await _userManager.GetUserAsync(User);
-                await RegisterPetTutor(user.Id, pet.Id);
-                return RedirectToAction(nameof(Index));
-            }
+        // Update only the fields that can be modified by the user
+        petToUpdate.Name = pet.Name;
+        petToUpdate.Birthdate = pet.Birthdate;
+        petToUpdate.Notes = pet.Notes;
 
+        await _petsManager.Update(petToUpdate);
+        return RedirectToAction(nameof(MyPets));
+    }
+
+    // GET: Pets/AddNew
+    public async Task<IActionResult> AddNew()
+    {
+        return View();
+    }
+
+    // POST: Pets/AddNew
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AddNew([Bind("Id,Name,Species,Birthdate,Notes")] Pet pet)
+    {
+        if (!ModelState.IsValid)
+        {
             return View(pet);
         }
 
-        // GET: Pets/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
-        {
-            if (id == null || !UserIsPetTutor(id.Value))
-            {
-                return NotFound();
-            }
+        var user = await _userManager.GetUserAsync(User);
+        await _petsManager.Register(pet, user);
+        return RedirectToAction(nameof(MyPets));
+    }
 
-            var pet = await _context.Pets.FindAsync(id);
-            if (pet == null)
-            {
-                return NotFound();
-            }
-            return View(pet);
+    // GET: Pets/ShareWithVet/{PetId}
+    public async Task<IActionResult> ShareWithVet(Guid? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
         }
 
-        // POST: Pets/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Breed,Color,Species,Birthdate,Sex,MicrochipId,Description")] Pet pet)
+        var user = await _userManager.GetUserAsync(User);
+        var role = _roleManager.Roles.FirstOrDefault(r => r.Name == "PetTutor");
+        var userPets = await _petsManager.GetPets(user, role);
+        var pet = userPets.Find(x => x.Id == id.Value);
+        if (pet == null)
         {
-            if (id != pet.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(pet);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PetExists(pet.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(pet);
+            return Unauthorized();
         }
 
-        // GET: Pets/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        var accessCode = await _petsManager.GenerateAccessCode(pet);
+        return View(accessCode);
+    }
+
+
+    // VETERINARIAN:
+
+    // GET: Pets/MyPatients
+    [Authorize(Roles = "Veterinarian")]
+    public async Task<IActionResult> MyPatients()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        var role = _roleManager.Roles.FirstOrDefault(r => r.Name == "Veterinarian");
+        var pets = await _petsManager.GetPets(user, role);
+        return View(pets);
+    }
+
+    // GET: Pets/PatientDetails/{PetId}
+    [Authorize(Roles = "Veterinarian")]
+    public async Task<IActionResult> PatientDetails(Guid? id)
+    {
+        if (id == null)
         {
-            if (id == null || !UserIsPetTutor(id.Value))
-            {
-                return NotFound();
-            }
-
-            var pet = await _context.Pets
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (pet == null)
-            {
-                return NotFound();
-            }
-
-            return View(pet);
+            return NotFound();
         }
 
-        // POST: Pets/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        var user = await _userManager.GetUserAsync(User);
+        var role = _roleManager.Roles.FirstOrDefault(r => r.Name == "Veterinarian");
+        var userPets = await _petsManager.GetPets(user, role);
+        var pet = userPets.Find(x => x.Id == id.Value);
+        if (pet == null)
         {
-            var pet = await _context.Pets.FindAsync(id);
-            if (pet != null)
-            {
-                _context.Pets.Remove(pet);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return NotFound();
         }
 
-        private bool PetExists(Guid id)
+        return View(pet);
+    }
+    
+    // todo POST: Pets/PatientsDetails/{PetId}
+
+    // todo GET: Pets/MyPatients/AddNew
+    // todo POST: Pets/MyPatients/AddNew
+
+    // GET: Pets/AddPatientByCode
+    [Authorize(Roles = "Veterinarian")]
+    public async Task<IActionResult> AddPatientByCode()
+    {
+        return View();
+    }
+
+    // POST: Pets/AddPatientByCode
+    [Authorize(Roles = "Veterinarian")]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AddPatientByCode([Bind("Code")] string code)
+    {
+        var accessCode = await _petsManager.GetAccessCode(code);
+        if (accessCode == null)
         {
-            return _context.Pets.Any(e => e.Id == id);
+            return NotFound();
         }
 
-        private async Task<List<Pet>> GetUserPets()
+        var user = await _userManager.GetUserAsync(User);
+        var role = _roleManager.Roles.FirstOrDefault(r => r.Name == "Veterinarian");
+
+        var result = await _petsManager.UseAccessCode(accessCode, user, role);
+        if (!result)
         {
-            var user = await _userManager.GetUserAsync(User);
-            return await GetUserPets(user);
+            return RedirectToAction(nameof(AddPatientByCode));
         }
 
-        private async Task<List<Pet>> GetUserPets(AppUser user)
-        {
-            return await _context.AppUserPets
-                .Where(x => x.TutorId == user.Id)
-                .Select(x => x.Pet)
-                .ToListAsync();
-        }
-
-        private bool UserIsPetTutor(Guid petId)
-        {
-            var user = _userManager.GetUserAsync(User).Result;
-            return UserIsPetTutor(user, petId);
-        }
-
-        private bool UserIsPetTutor(AppUser user, Guid petId)
-        {
-            var userPets = GetUserPets(user).Result;
-            return userPets.Any(x => x.Id == petId);
-        }
-
-        private async Task RegisterPetTutor(Guid user, Guid pet)
-        {
-            var appUserPet = new AppUserPet
-            {
-                TutorId = user,
-                PetId = pet
-            };
-            _context.Add(appUserPet);
-            await _context.SaveChangesAsync();
-        }
+        return RedirectToAction(nameof(MyPatients));
     }
 }

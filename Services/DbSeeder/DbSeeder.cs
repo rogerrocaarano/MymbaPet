@@ -1,4 +1,7 @@
+using System;
+using System.Threading.Tasks;
 using c18_98_m_csharp.Data;
+using c18_98_m_csharp.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -7,13 +10,13 @@ namespace c18_98_m_csharp.Services.DbSeeder;
 
 public class DbSeeder(
     IOptions<DbSeederSettings> dbSeederSettingsOptions,
-    ApplicationDbContext context,
+    AppDbContext context,
     UserManager<AppUser> userManager,
     RoleManager<AppRole> roleManager
     ) : IDbSeeder
 {
     private readonly DbSeederSettings _dbSeederSettings = dbSeederSettingsOptions.Value;
-    private readonly ApplicationDbContext _context = context;
+    private readonly AppDbContext _context = context;
     private readonly UserManager<AppUser> _userManager = userManager;
     private readonly RoleManager<AppRole> _roleManager = roleManager;
 

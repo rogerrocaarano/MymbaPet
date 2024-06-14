@@ -1,0 +1,23 @@
+﻿@model c18_98_m_csharp.Models.Pets.PetAccessCode
+
+@{
+    ViewData["Title"] = "Código de acceso";
+}
+
+<div class="text-5xl font-medium bg-primary-100 border-2 border-primary rounded-2xl p-16 text-center text-primary-800">
+    @Model.Code
+</div>
+<br/>
+<p class="text-center text-2xl text-primary-800">
+    Este código expirará en 24hs. <br> No olvides compartirlo con tu veterinario.
+</p>
+<br/>
+<div class="flex flex-col md:flex-row md:place-content-center">
+    <a
+        asp-controller="Pets"
+        asp-action="PetDetails"
+        asp-route-id="@Model.PetId"
+        class="text-base twbtn solid-primary">
+        Volver
+    </a>
+</div>

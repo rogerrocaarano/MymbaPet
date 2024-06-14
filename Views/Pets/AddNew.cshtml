@@ -1,0 +1,49 @@
+@model c18_98_m_csharp.Models.Pets.Pet
+
+@{
+    ViewData["Title"] = "Agregar mascota";
+}
+
+<form asp-action="AddNew" class="bg-secondary-100 p-8 rounded-xl shadow-sm md:grid-cols-2 md:gap-x-3">
+    <div class="flex flex-col md:flex-row">
+        <div class="w-36 h-36 rounded-full bg-tertiary-100 mx-auto md:mx-0"></div>
+        <div class="mt-2 md:my-auto mx-auto md:ms-4">
+            <button class="twbtn">Subir foto</button>
+        </div>
+    <br/>
+    </div>
+    <div class="form-group-col col-start-1">
+        <label asp-for="Name">Nombre</label>
+        <input asp-for="Name" class="theme-input-primary"/>
+        <span asp-validation-for="Name" class="text-alert"></span>
+    </div>
+    <div class="form-group-col">
+        <label asp-for="Birthdate">Cumpleaños</label>
+        <input asp-for="Birthdate" type="date" class="theme-input-primary"/>
+        <span asp-validation-for="Birthdate" class="text-alert"></span>
+    </div>
+    <div class="form-group-col col-span-2">
+        <label asp-for="Species">Especie</label>
+        <select asp-for="Species" class="theme-input-primary">
+            <option value="Dog" class="theme-input-primary">Perro</option>
+            <option value="Cat">Gato</option>
+            <option value="Bird">Ave</option>
+            <option value="Other">Otro</option>
+        </select>
+    </div>
+    <div class="form-group-col col-span-2">
+        <label asp-for="Notes">Notas</label>
+        <textarea asp-for="Notes" class="theme-input-primary"></textarea>
+    </div>
+    <br/>
+    <div class="flex flex-col-reverse md:flex-row gap-2 md:place-content-end">
+        <a asp-controller="Pets" asp-action="MyPets" class="twbtn">
+            Cancelar
+        </a>
+        <button type="submit"
+                class="twbtn solid-primary">
+            Guardar
+        </button>
+
+    </div>
+</form>

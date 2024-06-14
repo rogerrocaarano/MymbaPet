@@ -1,0 +1,46 @@
+﻿@using c18_98_m_csharp.Models.ClinicalHistories
+@model List<c18_98_m_csharp.Models.ClinicalHistories.ClinicalHistoryEntry>
+
+@{
+    var history = ViewData["history"] as ClinicalHistory;
+    ViewData["Title"] = "Historia Clínica";
+}
+
+
+<table class="container table-auto">
+    <thead>
+    <tr class="text-left bg-primary text-secondary-100 h-12">
+        <th>Nombre</th>
+        <th>Fecha</th>
+        <th>Servicio</th>
+        <th>Informe</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var entry in Model)
+    {
+        <tr class="h-12 bg-secondary-100">
+            <td>@entry.Vet.UserName</td>
+            <td>@entry.Created</td>
+            <td>@entry.ServiceType</td>
+            <td>Enlace</td>
+        </tr>
+    }
+    </tbody>
+</table>
+<br/>
+<div
+    class="flex flex-column-reverse md:flex-row md:place-content-end">
+    <a
+        asp-controller="Pets"
+        asp-action="Index"
+        class="twbtn flex-grow md:flex-grow-0">
+        Volver
+    </a>
+    <a
+        asp-action="AddEntry"
+        asp-route-id="@history.Id"
+        class="twbtn solid-primary flex-grow md:flex-grow-0">
+        Añadir ficha
+    </a>
+</div>

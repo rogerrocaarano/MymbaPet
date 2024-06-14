@@ -2,19 +2,99 @@
 @tailwind components;
 @tailwind utilities;
 
-.btn-lg {
-    padding: 1em 2em;
-    border-radius: 0.5em;
-    text-align: center;
+
+:root {
+    /* Primary colors */
+    --primary-100: #f4f0ff;
+    --primary-200: #D1D0FB;
+    --primary-300: #AF97EB;
+    --primary: #986DF3; /* Default */
+    --primary-500: #7C58D3;
+    --primary-800: #221956;
+
+    /* Tertiary color */
+    --tertiary-100: #F2F4F8;
+    --tertiary: #227C9D; /* Default */
+
+    /* Secondary colors */
+    --secondary-100: #FFFFFF;
+    --secondary-200: #FEF7FF;
+    --secondary-300: #F6F6FE;
+    --secondary-400: #E7ECF3;
+    --secondary-500: #C1C7CD;
+    --secondary: #E7B387; /* Default */
+    --secondary-700: #EAAC8E1A;
+
+    /* Alert color */
+    --alert: #E34D56; /* Default */
+    
+    --dark-300: #7A798E;
+    --dark: #21272A;
 }
 
-.btn {
-    padding: 0.5em 1.5em;
-    border-radius: 0.5em;
-    text-align: center;
+
+/* Inputs */
+.form-group-col {
+    display: flex;
+    flex-direction: column;
 }
 
-body {
-    /* font-family: "Roboto"; */
-    color: #393b41;
+.form-group-col > * {
+    margin-bottom: 0.4em;
+}
+
+.theme-input-primary {
+    background-color: var(--secondary-100);
+    border-radius: 0.25rem;
+    border-color: var(--primary-300);
+}
+
+.theme-input-primary:focus {
+    border-color: var(--primary);
+}
+
+.theme-input-primary:disabled {
+    background-color: var(--primary-100);
+}
+
+/* Buttons */
+
+.twbtn {
+    color: var(--tertiary);
+    padding: 0.8em 1.8em;
+    border-radius: 0.5em;
+    text-align: center;
+    font-weight: 500;
+}
+
+.twbtn:hover {
+    outline: var(--tertiary);
+}
+
+.twbtn.solid-primary {
+    background-color: var(--primary);
+    color: var(--secondary-100);
+}
+
+.twbtn.solid-primary:hover {
+    background-color: var(--primary-500);
+}
+
+.twbtn.solid-alert {
+    background-color: var(--alert);
+    color: var(--secondary-100);
+}
+
+.twbtn.solid-alert:hover {
+    background-color: #E34D56;
+}
+
+.twbtn.nav {
+    color: var(--dark-300);
+    border-radius: 2em 0 0 2em;
+}
+
+.twbtn.nav:hover {
+    color: var(--primary);
+    background-color: var(--secondary-300);
 }

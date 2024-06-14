@@ -1,0 +1,24 @@
+@if (User.IsInRole("Veterinarian"))
+{
+    <div
+        class="flex flex-col md:flex-row">
+        <a
+            asp-action="AddPatientByCode"
+            class="twbtn solid-primary flex-grow md:flex-grow-0">
+            Añadir paciente
+        </a>
+    </div>
+}
+else
+{
+    <div
+        class="flex flex-col md:flex-row">
+        <a
+            asp-action="AddNew"
+            class="twbtn solid-primary flex-grow md:flex-grow-0">
+            Añadir mascota
+        </a>
+    </div>
+}
+
+

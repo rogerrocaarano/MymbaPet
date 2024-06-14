@@ -1,0 +1,73 @@
+@model c18_98_m_csharp.Models.Pets.Pet
+
+@{
+    ViewData["Title"] = "Información de mi mascota";
+    int months = ((DateTime.Now.Year - Model.Birthdate.Year) * 12) + DateTime.Now.Month - Model.Birthdate.Month;
+    int years = months / 12;
+    int remainingMonths = months % 12;
+    var petAge = $"{years} años y {remainingMonths} meses";
+}
+<form
+    asp-action="PetDetails"
+    class="grid grid-cols-1 md:grid-cols-2 gap-x-3 bg-secondary-100 rounded-lg shadow-sm p-4">
+    <div class="flex flex-col md:flex-row md:col-span-2">
+        <div class="w-36 h-36 rounded-full bg-tertiary-100 mx-auto md:mx-0"></div>
+        <div class="mt-2 md:my-auto mx-auto md:ms-4">
+            <button class="twbtn">Subir foto</button>
+        </div>
+    </div>
+    <input asp-for="Id" hidden="hidden"/>
+    <div class="form-group-col">
+        <label asp-for="Name">Nombre</label>
+        <input asp-for="Name" class="theme-input-primary"/>
+        <span asp-validation-for="Name"></span>
+    </div>
+    <div class="form-group-col">
+        <label asp-for="Species">Especie</label>
+        <input asp-for="Species" class="theme-input-primary" disabled="disabled"/>
+    </div>
+    <div class="form-group-col">
+        <label asp-for="Birthdate">Cumpleaños</label>
+        <input asp-for="Birthdate" type="date" class="theme-input-primary"/>
+    </div>
+    <div class="form-group-col">
+        <label asp-for="Birthdate">Edad</label>
+        <input value="@petAge" class="theme-input-primary" disabled="disabled"/>
+    </div>
+    <div class="form-group-col md:col-span-2">
+        <label asp-for="Notes">Notas</label>
+        <textarea asp-for="Notes" class="theme-input-primary"></textarea>
+        <span asp-validation-for="Notes"></span>
+    </div>
+    <h4 class="md:col-span-2 pb-5 text-2xl">Información provista por el veterinario</h4>
+    <div class="form-group-col">
+        <label asp-for="Breed" disabled="disabled">Raza</label>
+        <input asp-for="Breed" class="theme-input-primary" disabled="disabled"/>
+    </div>
+    <div class="form-group-col">
+        <label asp-for="Color">Color</label>
+        <input asp-for="Color" class="theme-input-primary" disabled="disabled"/>
+    </div>
+    <div class="grid grid-cols-2 gap-5">
+        <div class="form-group-col">
+            <label asp-for="Sex">Género</label>
+            <select asp-for="Sex" class="theme-input-primary" disabled="disabled">
+                <option value="Macho">Macho</option>
+                <option value="Hembra">Hembra</option>
+            </select>
+        </div>
+        <div class="form-group-col" disabled="disabled">
+            <label>Esterilizado:</label>
+            <div>
+                <input type="checkbox" class="theme-input-primary" disabled="disabled"/>
+                <span>Sí.</span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group-col">
+        <label asp-for="MicrochipId">ID del Microship</label>
+        <input asp-for="MicrochipId" class="theme-input-primary" disabled="disabled"/>
+    </div>
+</form>
+<br/>
+<partial name="Shared/PetDetailsActions"/>
