@@ -12,10 +12,12 @@
     Este código expirará en 24hs. <br> No olvides compartirlo con tu veterinario.
 </p>
 <br/>
-<a
-    asp-controller="Pets"
-    asp-action="PetDetails"
-    asp-route-id="@Model.PetId"
-    class="theme-btn flex place-content-center md:inline-block bg-primary hover:bg-primary-500 text-secondary-100 text-base">
-    Volver
-</a>
+<div class="flex flex-col md:flex-row md:place-content-center">
+    <a
+        asp-controller="Pets"
+        asp-action="PetDetails"
+        asp-route-id="@Model.PetId"
+        class="text-base twbtn solid-primary">
+        Volver
+    </a>
+</div>

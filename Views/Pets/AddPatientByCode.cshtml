@@ -4,11 +4,19 @@
     ViewData["Title"] = "Agregar mascota por código de acceso";
 }
 
-<p>
-    Introducí el código proporcionado por el tutor de la mascota.
-</p>
 
-<form asp-action="AddPatientByCode">
-    <input type="text" asp-for="Code"/>
-    <input type="submit" value="Agregar"/>
+
+<form asp-action="AddPatientByCode" class="flex flex-col">
+    <input 
+        type="text" 
+        asp-for="Code" 
+        class="text-5xl font-medium bg-primary-100 border-2 border-primary rounded-2xl p-16 text-center text-primary-800"/>
+    <p class="text-center text-2xl text-primary-800">
+        Introducí el código proporcionado por el tutor de la mascota.
+    </p>
+    <input type="submit" value="Agregar" class="twbtn solid-primary"/>
 </form>
+
+<br/>
+
+

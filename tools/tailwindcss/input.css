@@ -44,13 +44,17 @@
 }
 
 .theme-input-primary {
-    background-color: var(--primary-100);
+    background-color: var(--secondary-100);
     border-radius: 0.25rem;
-    border-color: var(--secondary-400);
+    border-color: var(--primary-300);
 }
 
 .theme-input-primary:focus {
     border-color: var(--primary);
+}
+
+.theme-input-primary:disabled {
+    background-color: var(--primary-100);
 }
 
 /* Buttons */
@@ -83,10 +87,6 @@
 
 .twbtn.solid-alert:hover {
     background-color: #E34D56;
-}
-
-.theme-input-primary:disabled {
-    background-color: transparent;
 }
 
 .twbtn.nav {

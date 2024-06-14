@@ -2,21 +2,45 @@
 @model List<c18_98_m_csharp.Models.ClinicalHistories.ClinicalHistoryEntry>
 
 @{
-    ViewData["Title"] = "Historia Clínica";
     var history = ViewData["history"] as ClinicalHistory;
+    ViewData["Title"] = "Historia Clínica";
 }
-<div>@history.Id</div>
-@if (Model.Count == 0)
-{
-    <p>No hay entradas en la historia clínica</p>
-}
-<a
-    asp-action="AddEntry"
-    asp-route-id="@history.Id"
-    class="twbtn">
-    Añadir ficha
-</a>
-@foreach (var entry in Model)
-{
-    <div>@entry.Id</div>
-}
+
+
+<table class="container table-auto">
+    <thead>
+    <tr class="text-left bg-primary text-secondary-100 h-12">
+        <th>Nombre</th>
+        <th>Fecha</th>
+        <th>Servicio</th>
+        <th>Informe</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var entry in Model)
+    {
+        <tr class="h-12 bg-secondary-100">
+            <td>@entry.Vet.UserName</td>
+            <td>@entry.Created</td>
+            <td>@entry.ServiceType</td>
+            <td>Enlace</td>
+        </tr>
+    }
+    </tbody>
+</table>
+<br/>
+<div
+    class="flex flex-column-reverse md:flex-row md:place-content-end">
+    <a
+        asp-controller="Pets"
+        asp-action="Index"
+        class="twbtn flex-grow md:flex-grow-0">
+        Volver
+    </a>
+    <a
+        asp-action="AddEntry"
+        asp-route-id="@history.Id"
+        class="twbtn solid-primary flex-grow md:flex-grow-0">
+        Añadir ficha
+    </a>
+</div>

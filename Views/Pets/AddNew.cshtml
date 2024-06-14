@@ -8,7 +8,7 @@
     <div class="flex flex-col md:flex-row">
         <div class="w-36 h-36 rounded-full bg-tertiary-100 mx-auto md:mx-0"></div>
         <div class="mt-2 md:my-auto mx-auto md:ms-4">
-            <button class="theme-btn bg-transparent hover:text-secondary-100 text-tertiary hover:bg-tertiary border-2 border-tertiary">Subir foto</button>
+            <button class="twbtn">Subir foto</button>
         </div>
     <br/>
     </div>
@@ -36,12 +36,12 @@
         <textarea asp-for="Notes" class="theme-input-primary"></textarea>
     </div>
     <br/>
-    <div class="col-span-2 flex flex-row place-content-end gap-2">
-        <a asp-controller="Pets" asp-action="MyPets" class="inline-block theme-btn text-tertiary">
+    <div class="flex flex-col-reverse md:flex-row gap-2 md:place-content-end">
+        <a asp-controller="Pets" asp-action="MyPets" class="twbtn">
             Cancelar
         </a>
         <button type="submit"
-                class="theme-btn bg-primary text-secondary-100 hover:bg-primary-500 shadow-sm inline-block">
+                class="twbtn solid-primary">
             Guardar
         </button>
 
