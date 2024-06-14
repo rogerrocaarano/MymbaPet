@@ -37,6 +37,19 @@ public class PetsController : Controller
         return RedirectToAction(nameof(MyPets));
     }
 
+    public IActionResult Details(Guid? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+        if (User.IsInRole("Veterinarian"))
+        {
+            return RedirectToAction(nameof(PatientDetails), new { id });
+        }
+        return RedirectToAction(nameof(PetDetails), new { id });
+    }
+
     // GET: Pets/MyPets
     public async Task<IActionResult> MyPets()
     {
@@ -155,8 +168,28 @@ public class PetsController : Controller
         return View(pets);
     }
 
-    // todo GET: Pets/MyPatients/Details/{PetId}
-    // todo POST: Pets/MyPatients/Details/{PetId}
+    // GET: Pets/PatientDetails/{PetId}
+    [Authorize(Roles = "Veterinarian")]
+    public async Task<IActionResult> PatientDetails(Guid? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var user = await _userManager.GetUserAsync(User);
+        var role = _roleManager.Roles.FirstOrDefault(r => r.Name == "Veterinarian");
+        var userPets = await _petsManager.GetPets(user, role);
+        var pet = userPets.Find(x => x.Id == id.Value);
+        if (pet == null)
+        {
+            return NotFound();
+        }
+
+        return View(pet);
+    }
+    
+    // todo POST: Pets/PatientsDetails/{PetId}
 
     // todo GET: Pets/MyPatients/AddNew
     // todo POST: Pets/MyPatients/AddNew

@@ -54,4 +54,36 @@
     text-align: center;
     font-weight: 500;
 }
+.twbtn {
+    color: var(--tertiary);
+    padding: 0.8em 1.8em;
+    border-radius: 0.5em;
+    text-align: center;
+    font-weight: 500;
+}
+.twbtn:hover {
+    outline: var(--tertiary);
+}
+.twbtn.solid-primary {
+    background-color: var(--primary);
+    color: var(--secondary-100);
+}
+.twbtn.solid-primary:hover {
+    background-color: var(--primary-500);
+}
+
+.twbtn.solid-alert {
+    background-color: var(--alert);
+    color: var(--secondary-100);
+}
+.twbtn.solid-alert:hover {
+    background-color: #E34D56;
+}
+
+
+
+.theme-input-primary:disabled {
+    background-color: transparent;
+}
+
 

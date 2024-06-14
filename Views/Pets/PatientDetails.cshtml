@@ -1,0 +1,78 @@
+@model c18_98_m_csharp.Models.Pets.Pet
+
+@{
+    ViewData["Title"] = "Información de mi paciente";
+    var petAge = DateTime.Now.Year - Model.Birthdate.Year;
+}
+<form asp-action="PetDetails" class="grid grid-cols-1 md:grid-cols-2 gap-x-3 bg-secondary-100 rounded-lg shadow-sm p-4">
+    <input asp-for="Id" hidden="hidden"/>
+    <div class="form-group-col">
+        <label asp-for="Name">Nombre</label>
+        <input asp-for="Name" class="theme-input-primary" disabled="disabled"/>
+        <span asp-validation-for="Name"></span>
+    </div>
+    <div class="form-group-col">
+        <label asp-for="Species">Especie</label>
+        <input asp-for="Species" class="theme-input-primary" disabled="disabled"/>
+    </div>
+    <div class="form-group-col">
+        <label asp-for="Breed">Raza</label>
+        <input asp-for="Breed" class="theme-input-primary"/>
+    </div>
+    <div class="form-group-col">
+        <label asp-for="Color">Color</label>
+        <input asp-for="Color" class="theme-input-primary"/>
+    </div>
+    <div class="form-group-col">
+        <label asp-for="Birthdate">Cumpleaños</label>
+        <input asp-for="Birthdate" type="date" class="theme-input-primary" disabled="disabled"/>
+    </div>
+    <div class="form-group-col">
+        <label asp-for="Birthdate">Edad</label>
+        <input value="@petAge" class="theme-input-primary" disabled="disabled"/>
+    </div>
+    <div class="form-group-col">
+        <label asp-for="Sex">Género</label>
+        <select asp-for="Sex" class="theme-input-primary">
+            <option value="Macho">Macho</option>
+            <option value="Hembra">Hembra</option>
+        </select>
+    </div>
+    <div class="form-group-col">
+        <label >Esterilizado:</label>
+        <div>
+            <input type="checkbox" class="theme-input-primary"/>
+            <span>Sí.</span>
+        </div>
+
+
+    </div>
+    <div class="form-group-col">
+        <label asp-for="MicrochipId">ID del Microship</label>
+        <input asp-for="MicrochipId" class="theme-input-primary"/>
+    </div>
+    <div class="form-group-col">
+        <label asp-for="Notes">Notas</label>
+        <textarea asp-for="Notes" class="theme-input-primary"></textarea>
+        <span asp-validation-for="Notes"></span>
+    </div>
+</form>
+<br/>
+<div class="container flex flex-row gap-2 place-content-end">
+    <a
+        asp-action="Index"
+        class="twbtn">
+        Volver
+    </a>
+    <a
+        asp-controller="ClinicalHistories"
+        asp-action="Details" asp-route-id="@Model.ClinicalHistoryId"
+        class="twbtn">
+        Historia Clínica
+    </a>
+    <button
+        type="submit"
+        class="twbtn solid-primary">
+        Guardar
+    </button>
+</div>
