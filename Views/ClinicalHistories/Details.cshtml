@@ -10,6 +10,12 @@
 {
     <p>No hay entradas en la historia clínica</p>
 }
+<a
+    asp-action="AddEntry"
+    asp-route-id="@history.Id"
+    class="twbtn">
+    Añadir ficha
+</a>
 @foreach (var entry in Model)
 {
     <div>@entry.Id</div>

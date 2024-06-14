@@ -8,7 +8,7 @@ public class ClinicalHistoryEntry
 {
     public Guid Id { get; set; }
     [ForeignKey("ClinicalHistory")] public Guid ClinicalHistoryId { get; set; }
-    public ClinicalHistory ClinicalHistory { get; set; }
+    public ClinicalHistory? ClinicalHistory { get; set; }
     private DateTime _created;
 
     public DateTime Created
@@ -33,5 +33,5 @@ public class ClinicalHistoryEntry
     public string? Treatment { get; set; }
     public string Status { get; set; } = "Pending";
     [ForeignKey("Vet")] public Guid VetId { get; set; }
-    public AppUser Vet { get; set; }
+    public AppUser? Vet { get; set; }
 }

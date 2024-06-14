@@ -57,15 +57,17 @@ public class ClinicalHistoriesController(
         {
             return NotFound();
         }
+
         ViewData["History"] = history;
         return View();
     }
-    
+
     // POST: ClinicalHistories/AddEntry/{ClinicalHistoryId}
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Authorize(Roles = "Veterinarian")]
-    public async Task<IActionResult> AddEntry(Guid? id, [Bind("ServiceType,PetWeight,ConsultReason,Observations,Diagnosis,Treatment")]ClinicalHistoryEntry entry)
+    public async Task<IActionResult> AddEntry(Guid? id,
+        [Bind("ServiceType,PetWeight,ConsultReason,Observations,Diagnosis,Treatment")] ClinicalHistoryEntry entry)
     {
         if (id == null)
         {
@@ -92,6 +94,4 @@ public class ClinicalHistoriesController(
         await _clinicalHistoryManager.AddEntry(history, entry, user);
         return RedirectToAction(nameof(Details), new { id });
     }
-    
-    
 }

@@ -17,6 +17,7 @@
             <option value="Hospitalización">Hospitalización</option>
             <option value="Otro">Otro</option>
         </select>
+        <span asp-validation-for="ServiceType" class="text-alert"></span>
     </div>
     <div class="form-group-col">
         <label>Peso:</label>
@@ -26,18 +27,22 @@
     <div class="form-group-col">
         <label>Motivo de consulta:</label>
         <textarea asp-for="ConsultReason" class="theme-input-primary"></textarea>
+        <span asp-validation-for="ConsultReason" class="text-alert"></span>
     </div>
     <div class="form-group-col">
         <label>Observaciones:</label>
         <textarea asp-for="Observations" class="theme-input-primary"></textarea>
+        <span asp-validation-for="Observations" class="text-alert"></span>
     </div>
     <div class="form-group-col">
         <label>Diagnostico:</label>
         <textarea asp-for="Diagnosis" class="theme-input-primary"></textarea>
+        <span asp-validation-for="Diagnosis" class="text-alert"></span>
     </div>
     <div class="form-group-col">
         <label>Tratamiento:</label>
         <textarea asp-for="Treatment" class="theme-input-primary"></textarea>
+        <span asp-validation-for="Treatment" class="text-alert"></span>
     </div>
-    <button class="theme-btn">Guardar</button>
+    <button type="submit" class="theme-btn">Guardar</button>
 </form>
